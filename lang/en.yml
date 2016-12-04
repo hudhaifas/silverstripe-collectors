@@ -1,5 +1,5 @@
 en:
-  CollectorAdmin:
+  CollectorsAdmin:
     MENUTITLE: 'Collectors'
   Collectable:
     SINGULARNAME: 'Collectables'

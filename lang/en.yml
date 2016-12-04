@@ -28,3 +28,8 @@ en:
     CURRENCY: 'Currency'
     DENOMINATION: 'Denomination'
     COLLECTIONS: 'Collections'
+    NAME: 'Name'
+    BACK_IMAGE: 'Back Image'
+    CONDITION: 'Condition'
+    TITLE: 'Title'
+    NUMBER_OF_COLLECTABLE: 'Number Of Collectables'

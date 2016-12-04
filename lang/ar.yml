@@ -28,3 +28,8 @@ ar:
     CURRENCY: 'العملة'
     DENOMINATION: 'الفئة'
     COLLECTIONS: 'المجموعات'
+    NAME: 'الاسم'
+    BACK_IMAGE: 'الصورة الخلفية'
+    CONDITION: 'الحالة'
+    TITLE: 'العنوان'
+    NUMBER_OF_COLLECTABLE: 'عدد المجموعات'    

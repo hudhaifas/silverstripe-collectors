@@ -1,0 +1,24 @@
+{
+    "name": "hudhaifas/silverstripe-collectors",
+    "description": "Complete solution for stamps & currency collectors portal.",
+    "type": "silverstripe-module",
+    "homepage": "https://github.com/hudhaifas/silverstripe-collectors",
+    "keywords": ["silverstripe", "collectors", "stamp", "currency", "coin"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hudhaifa Shatnawi",
+            "email": "me@hudhaifa.com"
+        }
+    ],
+    "support": {
+        "issues": "http://github.com/hudhaifas/silverstripe-collectors/issues"
+    },
+    "require": {
+        "silverstripe/cms": "~3.0",
+        "silverstripe/framework": "~3.0"
+    },
+    "extra": {
+        "installer-name": "familytree"
+    }
+}

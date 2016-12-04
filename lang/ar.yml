@@ -1,0 +1,23 @@
+ar:
+  CollectorAdmin:
+    MENUTITLE: 'هواة الجمع'
+  Collectable:
+    SINGULARNAME: 'مجمع'
+  CollectableCurrency:
+    SINGULARNAME: 'العملات'
+  CollectableBanknote:
+    SINGULARNAME: 'العملات الورقية'
+  CollectableCoin:
+    SINGULARNAME: 'العملات معدنية'
+  CollectableStamp:
+    SINGULARNAME: 'الطوابع'
+  Collector:
+    IMAGE: 'الصورة'
+    SERIAL_NUMBER: 'الرقم المتسلسل'
+    COUNTRY: 'البلد'
+    YEAR: 'السنة'
+    QUANTITY: 'الكمية'
+    DESCRIPTION: 'الوصف'
+    SUBJECT: 'الموضوع'
+    CURRENCY: 'العملة'
+    VALUE: 'القيمة'

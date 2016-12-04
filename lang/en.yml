@@ -1,0 +1,23 @@
+en:
+  CollectorAdmin:
+    MENUTITLE: 'Collectors'
+  Collectable:
+    SINGULARNAME: 'Collectables'
+  CollectableCurrency:
+    SINGULARNAME: 'Currencies'
+  CollectableBanknote:
+    SINGULARNAME: 'Banknotes'
+  CollectableCoin:
+    SINGULARNAME: 'Coins'
+  CollectableStamp:
+    SINGULARNAME: 'Stamps'
+  Collector:
+    IMAGE: 'Image'
+    SERIAL_NUMBER: 'Serial Number'
+    COUNTRY: 'Country'
+    YEAR: 'Year'
+    QUANTITY: 'Quantity'
+    DESCRIPTION: 'Description'
+    SUBJECT: 'Subject'
+    CURRENCY: 'Currency'
+    VALUE: 'Value'

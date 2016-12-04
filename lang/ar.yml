@@ -5,10 +5,14 @@ ar:
     SINGULARNAME: 'مجمع'
   CollectableCurrency:
     SINGULARNAME: 'العملات'
+  CurrencySet:
+    SINGULARNAME: 'مجموعات نقدية'
   CollectableBanknote:
     SINGULARNAME: 'العملات الورقية'
   CollectableCoin:
     SINGULARNAME: 'العملات معدنية'
+  StampSet:
+    SINGULARNAME: 'مجموعات بريدية'
   CollectableStamp:
     SINGULARNAME: 'الطوابع'
   CollectableCollection:

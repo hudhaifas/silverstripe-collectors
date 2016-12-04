@@ -5,10 +5,14 @@ en:
     SINGULARNAME: 'Collectables'
   CollectableCurrency:
     SINGULARNAME: 'Currencies'
+  CurrencySet:
+    SINGULARNAME: 'Currency Sets'
   CollectableBanknote:
     SINGULARNAME: 'Banknotes'
   CollectableCoin:
     SINGULARNAME: 'Coins'
+  StampSet:
+    SINGULARNAME: 'Stamp Sets'
   CollectableStamp:
     SINGULARNAME: 'Stamps'
   CollectableCollection:

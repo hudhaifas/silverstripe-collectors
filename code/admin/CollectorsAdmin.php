@@ -33,9 +33,12 @@ class CollectorsAdmin
         extends ModelAdmin {
 
     private static $managed_models = array(
+        'CurrencySet',
         'CollectableBanknote',
         'CollectableCoin',
+        'StampSet',
         'CollectableStamp',
+        'CollectableCollection',
     );
     private static $url_segment = 'collectors';
     private static $menu_title = "Collectors";

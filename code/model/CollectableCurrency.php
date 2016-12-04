@@ -34,30 +34,37 @@ class CollectableCurrency
 
     private static $db = array(
         'Currency' => 'Varchar(255)',
-        'Value' => 'Currency'
+        'Denomination' => 'Currency'
     );
     private static $translate = array(
     );
     private static $has_one = array(
         'BackImage' => 'Image',
+        'Set' => 'CurrencySet',
     );
     private static $has_many = array(
     );
     private static $many_many = array(
     );
     private static $searchable_fields = array(
+        'Country' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
+        'Year' => array(
+            'field' => 'NumericField',
+            'filter' => 'PartialMatchFilter',
+        ),
     );
     private static $summary_fields = array(
         'Image.StripThumbnail',
         'BackImage.StripThumbnail',
         'Currency',
-        'Value',
+        'Denomination',
         'SerialNumber',
         'Country',
         'Year',
         'Quantity',
-        'Description',
-        'Subject',
     );
 
     public function fieldLabels($includerelations = true) {
@@ -65,7 +72,7 @@ class CollectableCurrency
 
         $labels['BackImage.StripThumbnail'] = _t('Collector.BACK_IMAGE', 'Back Image');
         $labels['Currency'] = _t('Collector.CURRENCY', 'Currency');
-        $labels['Value'] = _t('Collector.VALUE', 'Value');
+        $labels['Denomination'] = _t('Collector.DENOMINATION', 'Denomination');
 
         return $labels;
     }
@@ -74,30 +81,25 @@ class CollectableCurrency
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            if ($field = $fields->fieldByName('Root.Main.Image')) {
-                $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collector");
-
-                $fields->removeFieldFromTab('Root.Main', 'Image');
-                $fields->addFieldToTab('Root.Main', $field);
-            }
+            $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
 
             if ($field = $fields->fieldByName('Root.Main.BackImage')) {
                 $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collector");
+                $field->setFolderName("collectors");
 
                 $fields->removeFieldFromTab('Root.Main', 'BackImage');
                 $fields->addFieldToTab('Root.Main', $field);
             }
 
-            $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Main');
+            $this->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Value', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Main');
+
+            $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
+            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
         });
 
         $fields = parent::getCMSFields();
@@ -106,7 +108,7 @@ class CollectableCurrency
     }
 
     public function getTitle() {
-        return $this->Country . ' (' . $this->Value . ' ' . $this->Currency . ')';
+        return $this->Country . ' (' . $this->Denomination . ' ' . $this->Currency . ')';
     }
 
 }

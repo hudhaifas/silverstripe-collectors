@@ -11,6 +11,8 @@ en:
     SINGULARNAME: 'Coins'
   CollectableStamp:
     SINGULARNAME: 'Stamps'
+  CollectableCollection:
+    SINGULARNAME: 'Collections'
   Collector:
     IMAGE: 'Image'
     SERIAL_NUMBER: 'Serial Number'
@@ -20,4 +22,5 @@ en:
     DESCRIPTION: 'Description'
     SUBJECT: 'Subject'
     CURRENCY: 'Currency'
-    VALUE: 'Value'
+    DENOMINATION: 'Denomination'
+    COLLECTIONS: 'Collections'

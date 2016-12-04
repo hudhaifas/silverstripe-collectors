@@ -48,6 +48,7 @@ class Collectable
     private static $has_many = array(
     );
     private static $many_many = array(
+        'Collections' => 'CollectableCollection',
     );
     private static $searchable_fields = array(
         'Country' => array(
@@ -55,7 +56,7 @@ class Collectable
             'filter' => 'PartialMatchFilter',
         ),
         'Year' => array(
-            'field' => 'NumaricField',
+            'field' => 'NumericField',
             'filter' => 'PartialMatchFilter',
         ),
     );
@@ -79,6 +80,7 @@ class Collectable
         $labels['Quantity'] = _t('Collector.QUANTITY', 'Quantity');
         $labels['Description'] = _t('Collector.DESCRIPTION', 'Description');
         $labels['Subject'] = _t('Collector.SUBJECT', 'Subject');
+        $labels['Collections'] = _t('Collector.COLLECTIONS', 'Collections');
 
         return $labels;
     }
@@ -89,7 +91,7 @@ class Collectable
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
             if ($field = $fields->fieldByName('Root.Main.Image')) {
                 $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collector");
+                $field->setFolderName("collectors");
 
                 $fields->removeFieldFromTab('Root.Main', 'Image');
                 $fields->addFieldToTab('Root.Main', $field);
@@ -98,9 +100,20 @@ class Collectable
             $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Main');
+
+            $fields->removeFieldFromTab('Root', 'Collections');
+
+            $collectionField = TagField::create(
+                            'Collections', //
+                            'Collections', // 
+                            CollectableCollection::get(), //
+                            $self->Collections()
+            );
+            $fields->addFieldToTab('Root.Details', $collectionField);
+
+            $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Details');
+            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
         });
 
         $fields = parent::getCMSFields();
@@ -132,6 +145,37 @@ class Collectable
         return new SearchContext(
                 $this->class, $fields, $filters
         );
+    }
+
+    function reorderField($fields, $name, $fromTab, $toTab, $disabled = false) {
+        $field = $fields->fieldByName($fromTab . '.' . $name);
+
+        if ($field) {
+            $fields->removeFieldFromTab($fromTab, $name);
+            $fields->addFieldToTab($toTab, $field);
+
+            if ($disabled) {
+                $field = $field->performDisabledTransformation();
+            }
+        }
+
+        return $field;
+    }
+
+    function removeField($fields, $name, $fromTab) {
+        $field = $fields->fieldByName($fromTab . '.' . $name);
+
+        if ($field) {
+            $fields->removeFieldFromTab($fromTab, $name);
+        }
+
+        return $field;
+    }
+
+    function trim($field) {
+        if ($this->$field) {
+            $this->$field = trim($this->$field);
+        }
     }
 
 }

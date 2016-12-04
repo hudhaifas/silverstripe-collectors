@@ -11,6 +11,8 @@ ar:
     SINGULARNAME: 'العملات معدنية'
   CollectableStamp:
     SINGULARNAME: 'الطوابع'
+  CollectableCollection:
+    SINGULARNAME: 'المجموعات'
   Collector:
     IMAGE: 'الصورة'
     SERIAL_NUMBER: 'الرقم المتسلسل'
@@ -20,4 +22,5 @@ ar:
     DESCRIPTION: 'الوصف'
     SUBJECT: 'الموضوع'
     CURRENCY: 'العملة'
-    VALUE: 'القيمة'
+    DENOMINATION: 'الفئة'
+    COLLECTIONS: 'المجموعات'

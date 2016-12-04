@@ -27,31 +27,20 @@
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
- * @version 1.0, Dec 3, 2016 - 5:38:49 PM
+ * @version 1.0, Dec 4, 2016 - 12:08:57 AM
  */
-class CollectableStamp
-        extends Collectable {
+class StampSet
+        extends CollectableStamp {
 
     private static $db = array(
-        'Condition' => "Enum('Used, Unused', 'Unused')",
-    );
-    private static $translate = array(
-    );
-    private static $has_one = array(
-        'Set' => 'StampSet'
+        'Name' => "Varchar(255)",
     );
     private static $has_many = array(
-    );
-    private static $many_many = array(
-    );
-    private static $searchable_fields = array(
-        'Condition' => array(
-            'field' => 'TextField',
-            'filter' => 'PartialMatchFilter',
-        )
+        'Stamps' => 'CollectableStamp'
     );
     private static $summary_fields = array(
         'Image.StripThumbnail',
+        'Name',
         'SerialNumber',
         'Country',
         'Year',
@@ -62,7 +51,7 @@ class CollectableStamp
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Condition'] = _t('Collector.CONDITION', 'Condition');
+        $labels['Name'] = _t('Collector.NAME', 'Name');
 
         return $labels;
     }
@@ -71,21 +60,17 @@ class CollectableStamp
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            if ($field = $fields->fieldByName('Root.Main.Image')) {
-                $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collector");
+            $fields->removeFieldFromTab('Root.Main', 'SerialNumber');
 
-                $fields->removeFieldFromTab('Root.Main', 'Image');
-                $fields->addFieldToTab('Root.Main', $field);
-            }
-
-            $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Main');
+            $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
+            $this->reorderField($fields, 'Name', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
             $this->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Main');
+            
+            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
         });
 
         $fields = parent::getCMSFields();

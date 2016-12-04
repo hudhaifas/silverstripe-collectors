@@ -91,7 +91,7 @@ class AbstractCollectors
 
 }
 
-class AbstractLibrary_Controller
+class AbstractCollectors_Controller
         extends Page_Controller {
 
     private static $allowed_actions = array(

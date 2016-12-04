@@ -35,6 +35,6 @@ class CollectablesPage
 }
 
 class CollectablesPage_Controller
-        extends AbstractLibrary_Controller {
+        extends AbstractCollectors_Controller {
     
 }

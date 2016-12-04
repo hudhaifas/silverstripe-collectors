@@ -147,6 +147,26 @@ class Collectable
         );
     }
 
+    /// Permissions ///
+
+    function canCreate($member = false) {
+        return CollectorsHelper::is_collector($member);
+    }
+
+    function canView($member = false) {
+        return CollectorsHelper::is_collector($member);
+    }
+
+    function canDelete($member = false) {
+        return CollectorsHelper::is_collector($member);
+    }
+
+    function canEdit($member = false) {
+        return CollectorsHelper::is_collector($member);
+    }
+
+    /// Reorder ///
+
     function reorderField($fields, $name, $fromTab, $toTab, $disabled = false) {
         $field = $fields->fieldByName($fromTab . '.' . $name);
 

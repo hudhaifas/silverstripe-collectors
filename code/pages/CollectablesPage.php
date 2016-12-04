@@ -31,7 +31,15 @@
  */
 class CollectablesPage
         extends AbstractCollectors {
-    
+
+    public function canCreate($member = false) {
+        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+            $member = Member::currentUserID();
+        }
+
+        return (DataObject::get($this->owner->class)->count() > 0) ? false : true;
+    }
+
 }
 
 class CollectablesPage_Controller

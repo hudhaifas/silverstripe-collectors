@@ -81,7 +81,7 @@ class CollectableCurrency
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
 
             if ($field = $fields->fieldByName('Root.Main.BackImage')) {
                 $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
@@ -91,15 +91,15 @@ class CollectableCurrency
                 $fields->addFieldToTab('Root.Main', $field);
             }
 
-            $this->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
 
-            $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
         });
 
         $fields = parent::getCMSFields();

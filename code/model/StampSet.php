@@ -62,15 +62,15 @@ class StampSet
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
             $fields->removeFieldFromTab('Root.Main', 'SerialNumber');
 
-            $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Name', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Name', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
             
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
         });
 
         $fields = parent::getCMSFields();

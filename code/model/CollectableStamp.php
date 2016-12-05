@@ -71,21 +71,14 @@ class CollectableStamp
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            if ($field = $fields->fieldByName('Root.Main.Image')) {
-                $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collector");
+            $self->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
+//            $self->reorderField($fields, 'OriginID', 'Root.Main', 'Root.Main');
+            $self->removeField($fields, 'OriginID', 'Root.Main');
+            $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
 
-                $fields->removeFieldFromTab('Root.Main', 'Image');
-                $fields->addFieldToTab('Root.Main', $field);
-            }
-
-            $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
         });
 
         $fields = parent::getCMSFields();

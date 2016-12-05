@@ -36,6 +36,7 @@ class Collectable
         'SerialNumber' => 'Varchar(20)', // Unique serial number
         'Country' => 'Varchar(255)',
         'Year' => 'Int',
+        'Date' => 'Varchar(255)',
         'Quantity' => 'Int',
         'Description' => 'Varchar(255)',
         'Subject' => 'Varchar(255)',
@@ -44,6 +45,7 @@ class Collectable
     );
     private static $has_one = array(
         'Image' => 'Image',
+        'Origin' => 'CollectableOrigin',
     );
     private static $has_many = array(
     );
@@ -55,6 +57,10 @@ class Collectable
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
+        'Origin' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
         'Year' => array(
             'field' => 'NumericField',
             'filter' => 'PartialMatchFilter',
@@ -63,8 +69,10 @@ class Collectable
     private static $summary_fields = array(
         'Image.StripThumbnail',
         'SerialNumber',
+        'Origin.Name',
         'Country',
         'Year',
+        'TheDate',
         'Quantity',
         'Description',
         'Subject',
@@ -76,7 +84,11 @@ class Collectable
         $labels['Image.StripThumbnail'] = _t('Collector.IMAGE', 'Image');
         $labels['SerialNumber'] = _t('Collector.SERIAL_NUMBER', 'Serial Number');
         $labels['Country'] = _t('Collector.COUNTRY', 'Country');
+        $labels['Origin'] = _t('Collector.ORIGIN', 'Origin');
+        $labels['Origin.Name'] = _t('Collector.ORIGIN', 'Origin');
         $labels['Year'] = _t('Collector.YEAR', 'Year');
+        $labels['Date'] = _t('Collector.DATE', 'Date');
+        $labels['TheDate'] = _t('Collector.DATE', 'Date');
         $labels['Quantity'] = _t('Collector.QUANTITY', 'Quantity');
         $labels['Description'] = _t('Collector.DESCRIPTION', 'Description');
         $labels['Subject'] = _t('Collector.SUBJECT', 'Subject');
@@ -97,12 +109,19 @@ class Collectable
                 $fields->addFieldToTab('Root.Main', $field);
             }
 
-            $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-            $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
+//            $self->reorderField($fields, 'OriginID', 'Root.Main', 'Root.Main');
+            $self->removeField($fields, 'OriginID', 'Root.Main');
+            $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
 
+            $self->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'SetID', 'Root.Main', 'Root.Details');
+            
             $fields->removeFieldFromTab('Root', 'Collections');
-
             $collectionField = TagField::create(
                             'Collections', //
                             'Collections', // 
@@ -111,9 +130,6 @@ class Collectable
             );
             $fields->addFieldToTab('Root.Details', $collectionField);
 
-            $this->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Details');
-            $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
-            $this->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
         });
 
         $fields = parent::getCMSFields();
@@ -196,6 +212,10 @@ class Collectable
         if ($this->$field) {
             $this->$field = trim($this->$field);
         }
+    }
+
+    function TheDate() {
+        return $this->Year . ' ' . $this->Date;
     }
 
 }

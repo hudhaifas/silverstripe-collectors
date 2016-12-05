@@ -27,22 +27,36 @@
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
- * @version 1.0, Dec 4, 2016 - 2:52:04 AM
+ * @version 1.0, Dec 4, 2016 - 11:05:06 AM
  */
-class CollectablesPage
-        extends AbstractCollectors {
+class CollectableOrigin
+        extends DataObject {
 
-    public function canCreate($member = false) {
-        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
-            $member = Member::currentUserID();
-        }
+    private static $db = array(
+        'Name' => 'Varchar(255)',
+    );
+    private static $has_one = array(
+    );
+    private static $has_many = array(
+        'Collectables' => 'Collectable',
+    );
+    private static $belongs_many_many = array(
+    );
+    private static $searchable_fields = array(
+        'Name',
+    );
+    private static $summary_fields = array(
+        'Name',
+        'Collectables.Count',
+    );
 
-        return (DataObject::get($this->owner->class)->count() > 0) ? false : true;
+    public function fieldLabels($includerelations = true) {
+        $labels = parent::fieldLabels($includerelations);
+
+        $labels['Name'] = _t('Collector.NAME', 'Name');
+        $labels['Collectables.Count'] = _t('Collector.NUMBER_OF_COLLECTABLE', 'Number Of Collectables');
+
+        return $labels;
     }
 
-}
-
-class CollectablesPage_Controller
-        extends AbstractCollectors_Controller {
-    
 }

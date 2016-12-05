@@ -134,7 +134,7 @@ class AbstractCollectors_Controller
         $context = singleton('Collectable')->getDefaultSearchContext();
         $fields = $context->getSearchFields();
         $form = new Form($this, 'SearchCollectable', $fields, new FieldList(new FormAction('doSearchCollectable')));
-        $form->setTemplate('Collectors_SearchCollectable');
+//        $form->setTemplate('Collectors_SearchCollectable');
 //        $form->setFormMethod('GET');
 //        $form->disableSecurityToken();
 //        $form->setFormAction($this->Link());
@@ -229,6 +229,24 @@ class AbstractCollectors_Controller
         }
 
         return $categories;
+    }
+
+    function etalage($w, $h) {
+        $dir = $this->isRTL() ? 'right' : 'left';
+
+        Requirements::customScript(<<<JS
+            jQuery(document).ready(function ($) {
+                $('#etalage, .etalager').etalage({
+                    thumb_image_width: $w,
+                    thumb_image_height: $h,
+                    source_image_width: 900,
+                    source_image_height: 1200,
+                    show_hint: true,
+                    align: "$dir",
+                });
+            });
+JS
+        );
     }
 
 }

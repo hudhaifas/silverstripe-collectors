@@ -33,8 +33,6 @@ class CollectableCurrency
         extends Collectable {
 
     private static $db = array(
-        'Currency' => 'Varchar(255)',
-        'Denomination' => 'Currency'
     );
     private static $translate = array(
     );
@@ -47,17 +45,9 @@ class CollectableCurrency
     private static $many_many = array(
     );
     private static $searchable_fields = array(
-        'Country' => array(
-            'field' => 'TextField',
-            'filter' => 'PartialMatchFilter',
-        ),
-        'Year' => array(
-            'field' => 'NumericField',
-            'filter' => 'PartialMatchFilter',
-        ),
     );
     private static $summary_fields = array(
-        'Image.StripThumbnail',
+        'FrontImage.StripThumbnail',
         'BackImage.StripThumbnail',
         'Currency',
         'Denomination',
@@ -70,9 +60,8 @@ class CollectableCurrency
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['BackImage.StripThumbnail'] = _t('Collector.BACK_IMAGE', 'Back Image');
-        $labels['Currency'] = _t('Collector.CURRENCY', 'Currency');
-        $labels['Denomination'] = _t('Collector.DENOMINATION', 'Denomination');
+        $labels['BackImage'] = _t('Collectors.BACK_IMAGE', 'Back Image');
+        $labels['BackImage.StripThumbnail'] = _t('Collectors.BACK_IMAGE', 'Back Image');
 
         return $labels;
     }
@@ -81,25 +70,24 @@ class CollectableCurrency
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            $self->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
+            if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+                $field->setFolderName("collectors/currency");
+            }
 
             if ($field = $fields->fieldByName('Root.Main.BackImage')) {
                 $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collectors");
-
-                $fields->removeFieldFromTab('Root.Main', 'BackImage');
-                $fields->addFieldToTab('Root.Main', $field);
+                $field->setFolderName("collectors/currency");
             }
+
+            $self->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'BackImage', 'Root.Main', 'Root.Main');
 
             $self->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
             $self->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
+
             $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
             $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Main');
-
-            $self->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
-            $self->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
-            $self->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
+            $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
         });
 
         $fields = parent::getCMSFields();

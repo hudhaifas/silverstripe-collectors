@@ -17,17 +17,22 @@ en:
     SINGULARNAME: 'Stamps'
   CollectableCollection:
     SINGULARNAME: 'Collections'
-  Collector:
+  Collectors:
     IMAGE: 'Image'
+    FRONT_IMAGE: 'Front Image'
+    BACK_IMAGE: 'Back Image'
     SERIAL_NUMBER: 'Serial Number'
     COUNTRY: 'Country'
     YEAR: 'Year'
+    DATE: 'Date'
     QUANTITY: 'Quantity'
     DESCRIPTION: 'Description'
     SUBJECT: 'Subject'
     CURRENCY: 'Currency'
     DENOMINATION: 'Denomination'
     COLLECTIONS: 'Collections'
+    SETS: 'Sets'
+    SET: 'Set'
     NAME: 'Name'
     BACK_IMAGE: 'Back Image'
     CONDITION: 'Condition'

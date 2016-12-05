@@ -51,7 +51,7 @@ class CollectableStamp
         )
     );
     private static $summary_fields = array(
-        'Image.StripThumbnail',
+        'FrontImage.StripThumbnail',
         'SerialNumber',
         'Country',
         'Year',
@@ -62,7 +62,7 @@ class CollectableStamp
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Condition'] = _t('Collector.CONDITION', 'Condition');
+        $labels['Condition'] = _t('Collectors.CONDITION', 'Condition');
 
         return $labels;
     }
@@ -71,10 +71,13 @@ class CollectableStamp
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            $self->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
+            if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+                $field->setFolderName("collectors/stamps");
+            }
+
+            $self->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+            
             $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-//            $self->reorderField($fields, 'OriginID', 'Root.Main', 'Root.Main');
-            $self->removeField($fields, 'OriginID', 'Root.Main');
             $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
             $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
 

@@ -1,0 +1,166 @@
+@import "_mixins.less";
+
+// Override Bootstrap
+.typography {
+    a {
+        border-bottom: 1px dashed #fff;
+    }
+}
+
+.table {
+    font-size: 1em;
+}
+
+a.thumbnail {
+    &:hover, &:focus, &.active {
+        border-color: transparent;
+        color: #D80000;
+        border-bottom: 0px;
+    }
+}
+
+.thumbnail {
+    position: relative;
+    /*background: #b3b3b3;*/
+    margin-bottom: auto;
+    padding: 0;
+    border: 0;
+
+    .caption {
+        position: absolute;
+        top: 20%;
+        left: 0;
+        width: 100%;
+        bottom: 0px;
+
+        background: transparent;
+
+        h4 {
+            padding-left: 5px;
+            padding-right: 5px;
+
+            color: #fff;
+            font-size: 12px;
+            .font-smoothing();
+            .selectNone();
+        }
+
+    }
+
+    &.books-stamp {
+        width: 220px;
+        height: 220px;
+        margin-bottom: 10px;
+
+        .caption {
+            h4 {
+                padding-left: 15px;
+                padding-right: 15px;
+
+                font-size: 16px;
+            }
+        }
+    }
+
+    &.volume-default {
+        .image-size(280px);
+
+        .caption {
+            h4 {
+                padding-left: 20px;
+                padding-right: 20px;
+                line-height: 24px;
+                font-size: 18px;
+            }
+        }
+    }
+
+    &.carousel-default {
+        .image-size(280px);
+
+        .caption {
+            h4 {
+                padding-left: 20px;
+                padding-right: 20px;
+                line-height: 24px;
+                font-size: 18px;
+            }
+        }
+    }
+
+    &.book-default {
+        .image-size(140px);
+
+        .caption {
+            h4 {
+                padding-left: 4px;
+                padding-right: 4px;
+                line-height: 14px;
+                font-size: 12px;
+            }
+        }
+    }
+
+    &.related-default {
+        .image-size(102px);
+
+        .caption {
+            h4 {
+                padding-left: 2px;
+                padding-right: 2px;
+                line-height: 12px;
+                font-size: 10px;
+            }
+        }
+    }
+
+}
+
+// Related Book
+.book {
+    padding: 0;
+    margin-bottom: 1em;
+
+    .book-img {
+        float: left;
+        /*width: 40%;*/
+        margin-right: 5%;
+
+        img {
+            max-width: 102px;
+            height: 149px;
+        }
+    }
+
+    .book-desc {
+        overflow:hidden;
+
+        .title {
+            font-size: 16px;
+            margin: 0 0 6px;
+        }
+
+        .author {
+            font-size: 14px;
+            margin: 0 0 4px;
+        }
+
+        .line {
+            font-size: 12px;
+            margin: 0 0 2px;
+            color: #999;
+        }
+    }
+
+    .book-space {
+        height: 12px;
+    }
+}
+
+span.information {
+    display: block;
+    color: #999;
+    font-size: 1em;
+    font-weight: normal;
+    margin-bottom: 2px;
+}

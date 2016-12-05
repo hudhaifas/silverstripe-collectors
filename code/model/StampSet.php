@@ -51,7 +51,7 @@ class StampSet
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Name'] = _t('Collector.NAME', 'Name');
+        $labels['Name'] = _t('Collectors.NAME', 'Name');
 
         return $labels;
     }

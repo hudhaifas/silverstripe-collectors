@@ -35,6 +35,16 @@ class CollectionPage
     private static $db = array(
         'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp', 'Collectable')",
     );
+    private static $defaults = array(
+        'URLSegment' => 'collection',
+        'Title' => 'Collection',
+        'MenuTitle' => 'Collection',
+    );
+    private static $icon = "collectors/images/stamp.png";
+    private static $url_segment = 'collection';
+    private static $menu_title = 'collection';
+    private static $allowed_children = 'none';
+    private static $description = 'Adds a collection to your website.';
 
     public function canCreate($member = false) {
         return true;
@@ -87,8 +97,7 @@ class CollectionPage_Controller
 
             $data = array(
                 'Items' => $list,
-                'Results' => $paginate,
-                'Title' => _t('Collectors.COINS_LIST', 'Coins List')
+                'Results' => $paginate
             );
         }
 

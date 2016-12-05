@@ -53,8 +53,8 @@ class CollectableOrigin
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Name'] = _t('Collector.NAME', 'Name');
-        $labels['Collectables.Count'] = _t('Collector.NUMBER_OF_COLLECTABLE', 'Number Of Collectables');
+        $labels['Name'] = _t('Collectors.NAME', 'Name');
+        $labels['Collectables.Count'] = _t('Collectors.NUMBER_OF_COLLECTABLE', 'Number Of Collectables');
 
         return $labels;
     }

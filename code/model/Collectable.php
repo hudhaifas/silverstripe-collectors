@@ -34,6 +34,8 @@ class Collectable
 
     private static $db = array(
         'SerialNumber' => 'Varchar(20)', // Unique serial number
+        'Denomination' => 'Currency',
+        'Currency' => 'Varchar(255)',
         'Country' => 'Varchar(255)',
         'Year' => 'Int',
         'Date' => 'Varchar(255)',
@@ -44,8 +46,7 @@ class Collectable
     private static $translate = array(
     );
     private static $has_one = array(
-        'Image' => 'Image',
-        'Origin' => 'CollectableOrigin',
+        'FrontImage' => 'Image',
     );
     private static $has_many = array(
     );
@@ -53,11 +54,15 @@ class Collectable
         'Collections' => 'CollectableCollection',
     );
     private static $searchable_fields = array(
-        'Country' => array(
+        'Denomination' => array(
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
-        'Origin' => array(
+        'Currency' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
+        'Country' => array(
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
@@ -67,9 +72,10 @@ class Collectable
         ),
     );
     private static $summary_fields = array(
-        'Image.StripThumbnail',
+        'FrontImage.StripThumbnail',
         'SerialNumber',
-        'Origin.Name',
+        'Denomination',
+        'Currency',
         'Country',
         'Year',
         'TheDate',
@@ -81,18 +87,24 @@ class Collectable
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Image.StripThumbnail'] = _t('Collector.IMAGE', 'Image');
-        $labels['SerialNumber'] = _t('Collector.SERIAL_NUMBER', 'Serial Number');
-        $labels['Country'] = _t('Collector.COUNTRY', 'Country');
-        $labels['Origin'] = _t('Collector.ORIGIN', 'Origin');
-        $labels['Origin.Name'] = _t('Collector.ORIGIN', 'Origin');
-        $labels['Year'] = _t('Collector.YEAR', 'Year');
-        $labels['Date'] = _t('Collector.DATE', 'Date');
-        $labels['TheDate'] = _t('Collector.DATE', 'Date');
-        $labels['Quantity'] = _t('Collector.QUANTITY', 'Quantity');
-        $labels['Description'] = _t('Collector.DESCRIPTION', 'Description');
-        $labels['Subject'] = _t('Collector.SUBJECT', 'Subject');
-        $labels['Collections'] = _t('Collector.COLLECTIONS', 'Collections');
+        $labels['FrontImage'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+        $labels['FrontImage.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+
+        $labels['Denomination'] = _t('Collectors.DENOMINATION', 'Denomination');
+        $labels['Currency'] = _t('Collectors.CURRENCY', 'Currency');
+
+        $labels['Country'] = _t('Collectors.COUNTRY', 'Country');
+        $labels['Year'] = _t('Collectors.YEAR', 'Year');
+        $labels['Date'] = _t('Collectors.DATE', 'Date');
+        $labels['TheDate'] = _t('Collectors.DATE', 'Date');
+
+        $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
+        $labels['Quantity'] = _t('Collectors.QUANTITY', 'Quantity');
+        $labels['Description'] = _t('Collectors.DESCRIPTION', 'Description');
+        $labels['Subject'] = _t('Collectors.SUBJECT', 'Subject');
+        $labels['Sets'] = _t('Collectors.SETS', 'Sets');
+        $labels['Set'] = _t('Collectors.SET', 'Set');
+        $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
 
         return $labels;
     }
@@ -101,17 +113,17 @@ class Collectable
         $self = & $this;
 
         $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            if ($field = $fields->fieldByName('Root.Main.Image')) {
+            if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
                 $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
                 $field->setFolderName("collectors");
-
-                $fields->removeFieldFromTab('Root.Main', 'Image');
-                $fields->addFieldToTab('Root.Main', $field);
             }
 
+            $self->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+
+            $self->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
+            $self->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
+
             $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-//            $self->reorderField($fields, 'OriginID', 'Root.Main', 'Root.Main');
-            $self->removeField($fields, 'OriginID', 'Root.Main');
             $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
             $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
 
@@ -120,16 +132,15 @@ class Collectable
             $self->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
             $self->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
             $self->reorderField($fields, 'SetID', 'Root.Main', 'Root.Details');
-            
+
             $fields->removeFieldFromTab('Root', 'Collections');
             $collectionField = TagField::create(
                             'Collections', //
-                            'Collections', // 
+                            _t('Collectors.COLLECTIONS', 'Collections'), // 
                             CollectableCollection::get(), //
                             $self->Collections()
             );
             $fields->addFieldToTab('Root.Details', $collectionField);
-
         });
 
         $fields = parent::getCMSFields();
@@ -161,6 +172,10 @@ class Collectable
         return new SearchContext(
                 $this->class, $fields, $filters
         );
+    }
+
+    function Link($action = null) {
+        return Director::get_current_page()->Link($this->ID);
     }
 
     /// Permissions ///
@@ -215,7 +230,7 @@ class Collectable
     }
 
     function TheDate() {
-        return $this->Year . ' ' . $this->Date;
+        return $this->Year ? $this->Year . ' ' . $this->Date : null;
     }
 
 }

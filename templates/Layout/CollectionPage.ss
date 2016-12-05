@@ -1,5 +1,7 @@
 <% if $Results %>
     <% include Collection_List %>
-<% else %>
+<% else_if $Item %>
     <% include Collection_Single %>
+<% else %>
+    
 <% end_if %>

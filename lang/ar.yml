@@ -6,28 +6,33 @@ ar:
   CollectableCurrency:
     SINGULARNAME: 'العملات'
   CurrencySet:
-    SINGULARNAME: 'مجموعات نقدية'
+    SINGULARNAME: 'أطقم نقدية'
   CollectableBanknote:
     SINGULARNAME: 'العملات الورقية'
   CollectableCoin:
     SINGULARNAME: 'العملات معدنية'
   StampSet:
-    SINGULARNAME: 'مجموعات بريدية'
+    SINGULARNAME: 'أطقم بريدية'
   CollectableStamp:
     SINGULARNAME: 'الطوابع'
   CollectableCollection:
     SINGULARNAME: 'المجموعات'
-  Collector:
+  Collectors:
     IMAGE: 'الصورة'
+    FRONT_IMAGE: 'الصورة الأمامية'
+    BACK_IMAGE: 'الصورة الخلفية'
     SERIAL_NUMBER: 'الرقم المتسلسل'
     COUNTRY: 'البلد'
     YEAR: 'السنة'
+    DATE: 'التأريخ'
     QUANTITY: 'الكمية'
     DESCRIPTION: 'الوصف'
     SUBJECT: 'الموضوع'
     CURRENCY: 'العملة'
     DENOMINATION: 'الفئة'
     COLLECTIONS: 'المجموعات'
+    SETS: 'الأطقم'
+    SET: 'طقم'
     NAME: 'الاسم'
     BACK_IMAGE: 'الصورة الخلفية'
     CONDITION: 'الحالة'

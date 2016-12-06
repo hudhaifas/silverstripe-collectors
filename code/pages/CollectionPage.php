@@ -84,7 +84,7 @@ class CollectionPage_Controller
 
         if ($id) {
             $single = DataObject::get_by_id($this->Collection, (int) $id);
-            $this->etalage(280, 410);
+            $this->etalage(280, 280);
 
             $data = array(
                 'Item' => $single,
@@ -108,6 +108,24 @@ class CollectionPage_Controller
         }
 
         return $data;
+    }
+
+    private function etalage($w, $h) {
+        $dir = $this->isRTL() ? 'right' : 'left';
+
+        Requirements::customScript(<<<JS
+            jQuery(document).ready(function ($) {
+                $('#etalage, .etalager').etalage({
+                    thumb_image_width: $w,
+                    thumb_image_height: $h,
+                    source_image_width: 1000,
+                    source_image_height: 1000,
+                    show_hint: true,
+                    align: "$dir",
+                });
+            });
+JS
+        );
     }
 
 }

@@ -93,7 +93,7 @@ class CollectionPage_Controller
         } else {
             $list = DataObject::get($this->Collection);
 
-            $paginate = $this->getPaginated($list);
+            $paginate = $this->getPaginated($list, 12);
 
             $data = array(
                 'Items' => $list,

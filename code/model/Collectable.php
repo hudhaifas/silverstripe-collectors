@@ -53,6 +53,9 @@ class Collectable
     private static $many_many = array(
         'Collections' => 'CollectableCollection',
     );
+    private static $defaults = array(
+        'Quantity' => 1,
+    );
     private static $searchable_fields = array(
         'Denomination' => array(
             'field' => 'TextField',

@@ -6,13 +6,13 @@ ar:
   CollectableCurrency:
     SINGULARNAME: 'العملات'
   CurrencySet:
-    SINGULARNAME: 'أطقم نقدية'
+    SINGULARNAME: 'إصدارات نقدية'
   CollectableBanknote:
     SINGULARNAME: 'العملات الورقية'
   CollectableCoin:
     SINGULARNAME: 'العملات معدنية'
   StampSet:
-    SINGULARNAME: 'أطقم بريدية'
+    SINGULARNAME: 'إصدارات بريدية'
   CollectableStamp:
     SINGULARNAME: 'الطوابع'
   CollectableCollection:
@@ -31,8 +31,8 @@ ar:
     CURRENCY: 'العملة'
     DENOMINATION: 'الفئة'
     COLLECTIONS: 'المجموعات'
-    SETS: 'الأطقم'
-    SET: 'طقم'
+    SETS: 'الإصدارات'
+    SET: 'الإصدار'
     NAME: 'الاسم'
     BACK_IMAGE: 'الصورة الخلفية'
     CONDITION: 'الحالة'

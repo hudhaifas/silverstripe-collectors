@@ -39,8 +39,6 @@ class Collectable
         'Summary' => 'Varchar(255)',
         'Description' => 'Text',
         'Collector' => 'Varchar(255)',
-        'Year' => 'Int',
-        'Calendar' => 'Varchar(255)',
         'Explanations' => 'Text',
     );
     private static $has_one = array(
@@ -66,17 +64,12 @@ class Collectable
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
-        'Year' => array(
-            'field' => 'NumericField',
-            'filter' => 'PartialMatchFilter',
-        ),
     );
     private static $summary_fields = array(
         'FrontImage.StripThumbnail',
         'Title',
         'Summary',
         'Description',
-        'TheDate',
     );
 
     public function fieldLabels($includerelations = true) {
@@ -92,17 +85,16 @@ class Collectable
         $labels['Summary'] = _t('Collectors.SUMMARY', 'Summary');
         $labels['Collector'] = _t('Collectors.COLLECTOR', 'Collector');
 
-        $labels['Year'] = _t('Collectors.YEAR', 'Year');
-        $labels['Calendar'] = _t('Collectors.CALENDAR', 'Calendar');
-        $labels['TheDate'] = _t('Collectors.DATE', 'Date');
-
         $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
 
         return $labels;
     }
 
-    public function geteeCMSFields() {
+    public function getCMSFields() {
         $fields = parent::getCMSFields();
+
+        $detailsTab = new Tab('Details', _t('Collectors.DETAILS', 'Details'));
+        $fields->insertAfter('Main', $detailsTab);
 
         if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
             $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
@@ -114,15 +106,10 @@ class Collectable
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
-        $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Main');
 
-        $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-        $this->reorderField($fields, 'Calendar', 'Root.Main', 'Root.Main');
-
-        $detailsTab = new Tab('Details', _t('Collectors.DETAILS', 'Details'));
-        $fields->insertAfter('Main', $detailsTab);
         $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Explanations', 'Root.Main', 'Root.Details');
+        $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Details');
 
         $fields->removeFieldFromTab('Root', 'Collections');
         $collectionsField = TagField::create(
@@ -146,12 +133,6 @@ class Collectable
             $subtitle = $this->Title;
         }
 
-
-        if ($this->Date) {
-            $subtitle .= ' (' . $this->Date . ')';
-        } else if ($this->Year) {
-            $subtitle .= ' (' . $this->Year . ')';
-        }
         return $subtitle;
     }
 
@@ -175,39 +156,6 @@ class Collectable
 
     function canEdit($member = false) {
         return CollectorsHelper::is_collector($member);
-    }
-
-    /// Reorder ///
-
-    function reorderField($fields, $name, $fromTab, $toTab, $disabled = false) {
-        $field = $fields->fieldByName($fromTab . '.' . $name);
-
-        if ($field) {
-            $fields->removeFieldFromTab($fromTab, $name);
-            $fields->addFieldToTab($toTab, $field);
-
-            if ($disabled) {
-                $field = $field->performDisabledTransformation();
-            }
-        }
-
-        return $field;
-    }
-
-    function removeField($fields, $name, $fromTab) {
-        $field = $fields->fieldByName($fromTab . '.' . $name);
-
-        if ($field) {
-            $fields->removeFieldFromTab($fromTab, $name);
-        }
-
-        return $field;
-    }
-
-    function trim($field) {
-        if ($this->$field) {
-            $this->$field = trim($this->$field);
-        }
     }
 
     /// Single Data Object ///
@@ -243,7 +191,18 @@ class Collectable
     }
 
     public function getObjectTabs() {
-        
+        $lists = array();
+
+        if ($this->Explanations) {
+            $lists[] = array(
+                'Title' => _t('Collectors.EXPLANATIONS', 'Explanations'),
+                'Content' => $this->Explanations
+            );
+        }
+
+        $this->extend('extraTabs', $lists);
+
+        return new ArrayList($lists);
     }
 
     public function isObjectDisabled() {
@@ -257,12 +216,43 @@ class Collectable
             $title = $this->Title;
         }
 
-        if ($this->Date) {
-            $title .= ' (' . $this->Date . ')';
-        } else if ($this->Year) {
-            $title .= ' (' . $this->Year . ')';
-        }
         return $title;
+    }
+
+    /// Utils ///
+    function reorderField($fields, $name, $fromTab, $toTab, $disabled = false) {
+        $field = $fields->fieldByName($fromTab . '.' . $name);
+
+        if ($field) {
+            $fields->removeFieldFromTab($fromTab, $name);
+            $fields->addFieldToTab($toTab, $field);
+
+            if ($disabled) {
+                $field = $field->performDisabledTransformation();
+            }
+        }
+
+        return $field;
+    }
+
+    function removeField($fields, $name, $fromTab) {
+        $field = $fields->fieldByName($fromTab . '.' . $name);
+
+        if ($field) {
+            $fields->removeFieldFromTab($fromTab, $name);
+        }
+
+        return $field;
+    }
+
+    function trim($field) {
+        if ($this->$field) {
+            $this->$field = trim($this->$field);
+        }
+    }
+
+    public function toString() {
+        return $this->getTitle();
     }
 
 }

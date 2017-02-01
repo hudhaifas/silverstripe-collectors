@@ -36,6 +36,8 @@ class CollectableDenomination
         'Denomination' => 'Currency',
         'Currency' => 'Varchar(255)',
         'Quantity' => 'Int',
+        'Year' => 'Int',
+        'Calendar' => 'Varchar(255)',
         'Country' => 'Varchar(255)',
     );
     private static $defaults = array(
@@ -78,11 +80,14 @@ class CollectableDenomination
         $labels['Currency'] = _t('Collectors.CURRENCY', 'Currency');
         $labels['Quantity'] = _t('Collectors.QUANTITY', 'Quantity');
         $labels['Country'] = _t('Collectors.COUNTRY', 'Country');
+        $labels['Year'] = _t('Collectors.YEAR', 'Year');
+        $labels['Calendar'] = _t('Collectors.CALENDAR', 'Calendar');
+        $labels['TheDate'] = _t('Collectors.DATE', 'Date');
 
         return $labels;
     }
 
-    public function geteeCMSFields() {
+    public function getCMSFields() {
         $fields = parent::getCMSFields();
 
         if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
@@ -104,6 +109,41 @@ class CollectableDenomination
         $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
 
         return $fields;
+    }
+
+    public function getObjectTitle() {
+        $title = '';
+
+        if ($this->$this->Title) {
+            $title = $this->Title;
+        }
+
+        if ($this->Date) {
+            $title .= ' (' . $this->Date . ')';
+        } else if ($this->Year) {
+            $title .= ' (' . $this->Year . ')';
+        }
+
+        return $title;
+    }
+
+    public function Subtitle() {
+        $subtitle = '';
+        if ($this->Title) {
+            $subtitle = $this->Title;
+        }
+
+        if ($this->Date) {
+            $subtitle .= ' (' . $this->Date . ')';
+        } else if ($this->Year) {
+            $subtitle .= ' (' . $this->Year . ')';
+        }
+
+        return $subtitle;
+    }
+
+    function TheDate() {
+        return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
     }
 
 }

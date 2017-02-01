@@ -43,12 +43,12 @@ class CollectableDocument
 
         $labels['Date'] = _t('Collectors.DATE', 'Date');
         $labels['Texts'] = _t('Collectors.TEXTS', 'Texts');
-        $labels['IsPrivate'] = _t('Collectors.ISPRIVATE', 'Is Private');
+        $labels['IsPrivate'] = _t('Collectors.IS_PRIVATE', 'Private Document');
 
         return $labels;
     }
 
-    public function geteeCMSFields() {
+    public function getCMSFields() {
         $fields = parent::getCMSFields();
 
         if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
@@ -58,18 +58,17 @@ class CollectableDocument
         $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Texts', 'Root.Main', 'Root.Main');
-        $this->reorderField($fields, 'Collections', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'IsPrivate', 'Root.Main', 'Root.Details');
-        $this->reorderField($fields, 'Date', 'Root.Main', 'Root.Details');
-        $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Details');
-        $this->reorderField($fields, 'Calendar', 'Root.Main', 'Root.Details');
-        $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Details');
-        $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Details');
-        $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
+        $this->reorderField($fields, 'Collector', 'Root.Details', 'Root.Details');
+        $this->reorderField($fields, 'Collections', 'Root.Details', 'Root.Details');
+
+        $this->reorderField($fields, 'SerialNumber', 'Root.Details', 'Root.Details');
+        $this->reorderField($fields, 'Explanations', 'Root.Details', 'Root.Details');
 
         return $fields;
     }
@@ -113,7 +112,9 @@ class CollectableDocument
     }
 
     public function getObjectTabs() {
-        $lists = array();
+        $tabs = parent::getObjectTabs();
+
+        $lists = $tabs->toArray();
         if ($this->Texts) {
             $lists[] = array(
                 'Title' => _t('Collectors.TEXTS', 'Texts'),

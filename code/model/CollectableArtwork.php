@@ -35,6 +35,7 @@ class CollectableArtwork
     private static $db = array(
         'Date' => 'Date',
         'Texts' => 'HTMLText',
+        'Artist' => 'Varchar(255)',
     );
 
     public function fieldLabels($includerelations = true) {
@@ -42,11 +43,12 @@ class CollectableArtwork
 
         $labels['Date'] = _t('Collectors.DATE', 'Date');
         $labels['Texts'] = _t('Collectors.TEXTS', 'Texts');
+        $labels['Artist'] = _t('Collectors.ARTIST', 'Artist');
 
         return $labels;
     }
 
-    public function geteeCMSFields() {
+    public function getCMSFields() {
         $fields = parent::getCMSFields();
 
         if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
@@ -56,6 +58,7 @@ class CollectableArtwork
         $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Artist', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Texts', 'Root.Main', 'Root.Main');

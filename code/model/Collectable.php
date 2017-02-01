@@ -30,42 +30,39 @@
  * @version 1.0, Dec 3, 2016 - 10:35:14 PM
  */
 class Collectable
-        extends DataObject {
+        extends DataObject
+        implements SingleDataObject {
 
     private static $db = array(
         'SerialNumber' => 'Varchar(20)', // Unique serial number
-        'Denomination' => 'Currency',
-        'Currency' => 'Varchar(255)',
-        'Country' => 'Varchar(255)',
+        'Title' => 'Varchar(255)',
+        'Summary' => 'Varchar(255)',
+        'Description' => 'Text',
+        'Collector' => 'Varchar(255)',
         'Year' => 'Int',
-        'Date' => 'Varchar(255)',
-        'Quantity' => 'Int',
-        'Description' => 'Varchar(255)',
-        'Subject' => 'Varchar(255)',
-    );
-    private static $translate = array(
+        'Calendar' => 'Varchar(255)',
+        'Explanations' => 'Text',
     );
     private static $has_one = array(
         'FrontImage' => 'Image',
     );
-    private static $has_many = array(
-    );
     private static $many_many = array(
         'Collections' => 'CollectableCollection',
     );
-    private static $defaults = array(
-        'Quantity' => 1,
-    );
     private static $searchable_fields = array(
-        'Denomination' => array(
+        'Title' => array(
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
-        'Currency' => array(
+        'Summary' => array(
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
-        'Country' => array(
+        'Description' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
+        'Collector' => array(
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
@@ -76,15 +73,10 @@ class Collectable
     );
     private static $summary_fields = array(
         'FrontImage.StripThumbnail',
-        'SerialNumber',
-        'Denomination',
-        'Currency',
-        'Country',
-        'Year',
-        'TheDate',
-        'Quantity',
+        'Title',
+        'Summary',
         'Description',
-        'Subject',
+        'TheDate',
     );
 
     public function fieldLabels($includerelations = true) {
@@ -93,92 +85,78 @@ class Collectable
         $labels['FrontImage'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
         $labels['FrontImage.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
 
-        $labels['Denomination'] = _t('Collectors.DENOMINATION', 'Denomination');
-        $labels['Currency'] = _t('Collectors.CURRENCY', 'Currency');
+        $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
+        $labels['Title'] = _t('Collectors.TITLE', 'Title');
+        $labels['Description'] = _t('Collectors.DESCRIPTION', 'Description');
+        $labels['Explanations'] = _t('Collectors.EXPLANATIONS', 'Explanations');
+        $labels['Summary'] = _t('Collectors.SUMMARY', 'Summary');
+        $labels['Collector'] = _t('Collectors.COLLECTOR', 'Collector');
 
-        $labels['Country'] = _t('Collectors.COUNTRY', 'Country');
         $labels['Year'] = _t('Collectors.YEAR', 'Year');
-        $labels['Date'] = _t('Collectors.DATE', 'Date');
+        $labels['Calendar'] = _t('Collectors.CALENDAR', 'Calendar');
         $labels['TheDate'] = _t('Collectors.DATE', 'Date');
 
-        $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
-        $labels['Quantity'] = _t('Collectors.QUANTITY', 'Quantity');
-        $labels['Description'] = _t('Collectors.DESCRIPTION', 'Description');
-        $labels['Subject'] = _t('Collectors.SUBJECT', 'Subject');
-        $labels['Sets'] = _t('Collectors.SETS', 'Sets');
-        $labels['Set'] = _t('Collectors.SET', 'Set');
         $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
 
         return $labels;
     }
 
-    public function getCMSFields() {
-        $self = & $this;
-
-        $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
-                $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collectors");
-            }
-
-            $self->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
-
-            $self->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
-
-            $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
-
-            $self->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
-            $self->reorderField($fields, 'Quantity', 'Root.Main', 'Root.Details');
-            $self->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
-            $self->reorderField($fields, 'Subject', 'Root.Main', 'Root.Details');
-            $self->reorderField($fields, 'SetID', 'Root.Main', 'Root.Details');
-
-            $fields->removeFieldFromTab('Root', 'Collections');
-            $collectionField = TagField::create(
-                            'Collections', //
-                            _t('Collectors.COLLECTIONS', 'Collections'), // 
-                            CollectableCollection::get(), //
-                            $self->Collections()
-            );
-            $fields->addFieldToTab('Root.Details', $collectionField);
-        });
-
+    public function geteeCMSFields() {
         $fields = parent::getCMSFields();
+
+        if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->setFolderName("collectors");
+        }
+
+        $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+
+        $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Main');
+
+        $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Calendar', 'Root.Main', 'Root.Main');
+
+        $detailsTab = new Tab('Details', _t('Collectors.DETAILS', 'Details'));
+        $fields->insertAfter('Main', $detailsTab);
+        $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
+        $this->reorderField($fields, 'Explanations', 'Root.Main', 'Root.Details');
+
+        $fields->removeFieldFromTab('Root', 'Collections');
+        $collectionsField = TagField::create(
+                        'Collections', //
+                        _t('Collectors.COLLECTIONS', 'Collections'), // 
+                        CollectableCollection::get(), //
+                        $this->Collections()
+        );
+        $fields->addFieldToTab('Root.Details', $collectionsField);
 
         return $fields;
     }
 
-    protected function onBeforeWrite() {
-        parent::onBeforeWrite();
-    }
-
-    public function getTitle() {
-        return $this->Country . ' (' . $this->Year . ')';
-    }
-
-    public function getDefaultSearchContext() {
-        $fields = $this->scaffoldSearchFields(array(
-            'restrictFields' => array(
-                'Country',
-                'Year',
-            )
-        ));
-
-        $filters = array(
-            'Country' => new PartialMatchFilter('Country'),
-            'Year' => new PartialMatchFilter('Year'),
-        );
-
-        return new SearchContext(
-                $this->class, $fields, $filters
-        );
-    }
-
     function Link($action = null) {
-        return Director::get_current_page()->Link($this->ID);
+        return Director::get_current_page()->Link("show/$this->ID");
+    }
+
+    public function Subtitle() {
+        $subtitle = '';
+        if ($this->Title) {
+            $subtitle = $this->Title;
+        }
+
+
+        if ($this->Date) {
+            $subtitle .= ' (' . $this->Date . ')';
+        } else if ($this->Year) {
+            $subtitle .= ' (' . $this->Year . ')';
+        }
+        return $subtitle;
+    }
+
+    function TheDate() {
+        return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
     }
 
     /// Permissions ///
@@ -232,8 +210,59 @@ class Collectable
         }
     }
 
-    function TheDate() {
-        return $this->Year ? $this->Year . ' ' . $this->Date : null;
+    /// Single Data Object ///
+
+    public function getObjectImage() {
+        return $this->FrontImage();
+    }
+
+    public function getObjectLink() {
+        return $this->Link();
+    }
+
+    public function getObjectRelated() {
+        return $this->get()->sort('RAND()');
+    }
+
+    public function getObjectSummary() {
+        $lists = array();
+
+        if ($this->Subtitle()) {
+            $lists[] = array(
+                'Value' => $this->Subtitle()
+            );
+        }
+
+        if ($this->Summary) {
+            $lists[] = array(
+                'Value' => $this->Summary
+            );
+        }
+
+        return new ArrayList($lists);
+    }
+
+    public function getObjectTabs() {
+        
+    }
+
+    public function isObjectDisabled() {
+        return false;
+    }
+
+    public function getObjectTitle() {
+        $title = '';
+
+        if ($this->$this->Title) {
+            $title = $this->Title;
+        }
+
+        if ($this->Date) {
+            $title .= ' (' . $this->Date . ')';
+        } else if ($this->Year) {
+            $title .= ' (' . $this->Year . ')';
+        }
+        return $title;
     }
 
 }

@@ -8,5 +8,3 @@
 if (!defined('COLLECTORS_DIR')) {
     define('COLLECTORS_DIR', ltrim(Director::makeRelative(realpath(__DIR__)), DIRECTORY_SEPARATOR));
 }
-
-CollectorsAdmin::add_extension('SubsiteMenuExtension');

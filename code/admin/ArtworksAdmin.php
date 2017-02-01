@@ -27,9 +27,30 @@
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
- * @version 1.0, Dec 3, 2016 - 11:03:10 PM
+ * @version 1.0, Feb 1, 2017 - 10:39:36 AM
  */
-class CollectableCoin
-        extends CollectableCurrency {
-    //put your code here
+class ArtworksAdmin
+        extends ModelAdmin {
+
+    private static $managed_models = array(
+        'CollectableArtwork',
+    );
+    private static $url_segment = 'artworks';
+    private static $menu_title = "Artworks";
+    private static $menu_icon = "collectors/images/artwork.png";
+    public $showImportForm = false;
+    private static $tree_class = 'Artworks';
+
+    public function getEditForm($id = null, $fields = null) {
+        $form = parent::getEditForm($id, $fields);
+
+        $grid = $form->Fields()->dataFieldByName('Collectors');
+        if ($grid) {
+            $grid->getConfig()->removeComponentsByType('GridFieldDetailForm');
+            $grid->getConfig()->addComponent(new GridFieldSubsiteDetailForm());
+        }
+
+        return $form;
+    }
+
 }

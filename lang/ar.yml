@@ -1,10 +1,20 @@
 ar:
+  ArtworksAdmin:
+    MENUTITLE: 'الأعمال الفنية'
   CollectorsAdmin:
     MENUTITLE: 'هواة الجمع'
+  DocumentsAdmin:
+    MENUTITLE: 'الوثائق'
   Collectable:
     SINGULARNAME: 'مجمع'
   CollectableCurrency:
     SINGULARNAME: 'العملات'
+  CollectableDocument:
+    SINGULARNAME: 'الوثائق'
+  CollectableArtwork:
+    SINGULARNAME: 'الأعمال الفنية'
+  CollectableTextual:
+    SINGULARNAME: 'الأعمال الفنية الخطية'
   CurrencySet:
     SINGULARNAME: 'إصدارات نقدية'
   CollectableBanknote:
@@ -19,15 +29,20 @@ ar:
     SINGULARNAME: 'المجموعات'
   Collectors:
     IMAGE: 'الصورة'
+    DETAILS: 'التفاصيل'
+    TEXTS: 'النصوص'
     FRONT_IMAGE: 'الصورة الأمامية'
     BACK_IMAGE: 'الصورة الخلفية'
+    TITLE: 'العنوان'
+    SUMMARY: 'الملخص'
+    DESCRIPTION: 'الوصف'
+    COLLECTOR: 'المقتني'
     SERIAL_NUMBER: 'الرقم المتسلسل'
     COUNTRY: 'البلد'
     YEAR: 'السنة'
-    DATE: 'التأريخ'
+    DATE: 'التاريخ'
+    CALENDAR: 'التقويم'
     QUANTITY: 'الكمية'
-    DESCRIPTION: 'الوصف'
-    SUBJECT: 'الموضوع'
     CURRENCY: 'العملة'
     DENOMINATION: 'الفئة'
     COLLECTIONS: 'المجموعات'
@@ -38,3 +53,5 @@ ar:
     CONDITION: 'الحالة'
     TITLE: 'العنوان'
     NUMBER_OF_COLLECTABLE: 'عدد المجموعات'    
+    USED: 'مستخدم'
+    UNUSED: 'غير مستخدم'

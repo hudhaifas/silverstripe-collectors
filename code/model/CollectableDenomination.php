@@ -3,7 +3,7 @@
 /*
  * MIT License
  *  
- * Copyright (c) 2016 Hudhaifa Shatnawi
+ * Copyright (c) 2017 Hudhaifa Shatnawi
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,37 @@
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
- * @version 1.0, Dec 3, 2016 - 5:38:49 PM
+ * @version 1.0, Jan 27, 2017 - 10:02:12 AM
  */
-class CollectableStamp
-        extends CollectableDenomination {
+class CollectableDenomination
+        extends Collectable {
 
     private static $db = array(
-        'Condition' => "Enum('USED, UNUSED', 'UNUSED')",
+        'Denomination' => 'Currency',
+        'Currency' => 'Varchar(255)',
+        'Quantity' => 'Int',
+        'Country' => 'Varchar(255)',
+    );
+    private static $defaults = array(
+        'Quantity' => 1,
+    );
+    private static $searchable_fields = array(
+        'Denomination' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
+        'Currency' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
+        'Country' => array(
+            'field' => 'TextField',
+            'filter' => 'PartialMatchFilter',
+        ),
+        'Year' => array(
+            'field' => 'NumericField',
+            'filter' => 'PartialMatchFilter',
+        ),
     );
     private static $summary_fields = array(
         'FrontImage.StripThumbnail',
@@ -44,24 +68,26 @@ class CollectableStamp
         'Currency',
         'TheDate',
         'Country',
-        'Condition',
         'Quantity',
     );
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Condition'] = _t('Collectors.CONDITION', 'Condition');
+        $labels['Denomination'] = _t('Collectors.DENOMINATION', 'Denomination');
+        $labels['Currency'] = _t('Collectors.CURRENCY', 'Currency');
+        $labels['Quantity'] = _t('Collectors.QUANTITY', 'Quantity');
+        $labels['Country'] = _t('Collectors.COUNTRY', 'Country');
 
         return $labels;
     }
 
-    public function getCMSFields() {
+    public function geteeCMSFields() {
         $fields = parent::getCMSFields();
 
         if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
             $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-            $field->setFolderName("collectors/stamps");
+            $field->setFolderName("collectors");
         }
 
         $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
@@ -71,7 +97,6 @@ class CollectableStamp
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Main');
 
-        $self->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Calendar', 'Root.Main', 'Root.Main');
@@ -79,33 +104,6 @@ class CollectableStamp
         $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
 
         return $fields;
-    }
-
-    public function TheCondition() {
-        return _t('Collectors.' . $this->Condition, $this->Condition);
-    }
-
-    public function getObjectSummary() {
-        $lists = array();
-
-        if ($this->Subtitle()) {
-            $lists[] = array(
-                'Value' => $this->Subtitle()
-            );
-        }
-
-        if ($this->Summary) {
-            $lists[] = array(
-                'Value' => $this->Summary
-            );
-        }
-
-        $lists[] = array(
-            'Title' => _t('Collectors.CONDITION', 'Condition'),
-            'Value' => $this->TheCondition()
-        );
-
-        return new ArrayList($lists);
     }
 
 }

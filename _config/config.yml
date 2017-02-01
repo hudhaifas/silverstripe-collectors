@@ -1,3 +1,15 @@
 ---
 Name: collectors
 ---
+
+ArtworksAdmin:
+  extensions:
+    - SubsiteMenuExtension
+
+CollectorsAdmin:
+  extensions:
+    - SubsiteMenuExtension
+
+DocumentsAdmin:
+  extensions:
+    - SubsiteMenuExtension

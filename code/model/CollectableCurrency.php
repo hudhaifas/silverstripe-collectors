@@ -30,30 +30,21 @@
  * @version 1.0, Dec 3, 2016 - 10:53:00 PM
  */
 class CollectableCurrency
-        extends Collectable {
+        extends CollectableDenomination {
 
-    private static $db = array(
-    );
-    private static $translate = array(
-    );
     private static $has_one = array(
         'BackImage' => 'Image',
-        'Set' => 'CurrencySet',
-    );
-    private static $has_many = array(
-    );
-    private static $many_many = array(
-    );
-    private static $searchable_fields = array(
     );
     private static $summary_fields = array(
         'FrontImage.StripThumbnail',
         'BackImage.StripThumbnail',
-        'Currency',
+        'Title',
+        'Summary',
+        'Description',
         'Denomination',
-        'SerialNumber',
+        'Currency',
+        'TheDate',
         'Country',
-        'Year',
         'Quantity',
     );
 
@@ -67,36 +58,35 @@ class CollectableCurrency
     }
 
     public function getCMSFields() {
-        $self = & $this;
-
-        $this->beforeUpdateCMSFields(function ($fields) use ($self) {
-            if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
-                $field->setFolderName("collectors/currency");
-            }
-
-            if ($field = $fields->fieldByName('Root.Main.BackImage')) {
-                $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
-                $field->setFolderName("collectors/currency");
-            }
-
-            $self->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'BackImage', 'Root.Main', 'Root.Main');
-
-            $self->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
-
-            $self->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
-            $self->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
-        });
-
         $fields = parent::getCMSFields();
 
-        return $fields;
-    }
+        if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+            $field->setFolderName("collectors/currency");
+        }
 
-    public function getTitle() {
-        return $this->Country . ' (' . $this->Denomination . ' ' . $this->Currency . ')';
+        if ($field = $fields->fieldByName('Root.Main.BackImage')) {
+            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->setFolderName("collectors/currency");
+        }
+
+        $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'BackImage', 'Root.Main', 'Root.Main');
+
+        $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Details');
+        $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Details');
+        $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
+
+        $this->reorderField($fields, 'Denomination', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Currency', 'Root.Main', 'Root.Main');
+
+        $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Calendar', 'Root.Main', 'Root.Main');
+
+        $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
+
+        return $fields;
     }
 
 }

@@ -1,10 +1,20 @@
 en:
+  ArtworksAdmin:
+    MENUTITLE: 'Artworks'
   CollectorsAdmin:
     MENUTITLE: 'Collectors'
+  DocumentsAdmin:
+    MENUTITLE: 'Documents'
   Collectable:
     SINGULARNAME: 'Collectables'
   CollectableCurrency:
     SINGULARNAME: 'Currencies'
+  CollectableDocument:
+    SINGULARNAME: 'Documents'
+  CollectableArtwork:
+    SINGULARNAME: 'Artworks'
+  CollectableTextual:
+    SINGULARNAME: 'Textual Artworks'
   CurrencySet:
     SINGULARNAME: 'Currency Sets'
   CollectableBanknote:
@@ -19,15 +29,20 @@ en:
     SINGULARNAME: 'Collections'
   Collectors:
     IMAGE: 'Image'
+    DETAILS: 'Details'
+    TEXTS: 'Texts'
     FRONT_IMAGE: 'Front Image'
     BACK_IMAGE: 'Back Image'
+    TITLE: 'Title'
+    SUMMARY: 'Summary'
+    DESCRIPTION: 'Description'
+    COLLECTOR: 'Collector'
     SERIAL_NUMBER: 'Serial Number'
     COUNTRY: 'Country'
     YEAR: 'Year'
     DATE: 'Date'
+    CALENDAR: 'Calendar'
     QUANTITY: 'Quantity'
-    DESCRIPTION: 'Description'
-    SUBJECT: 'Subject'
     CURRENCY: 'Currency'
     DENOMINATION: 'Denomination'
     COLLECTIONS: 'Collections'
@@ -38,3 +53,5 @@ en:
     CONDITION: 'Condition'
     TITLE: 'Title'
     NUMBER_OF_COLLECTABLE: 'Number Of Collectables'
+    USED: 'Used'
+    UNUSED: 'Unused'

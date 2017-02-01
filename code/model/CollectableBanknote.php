@@ -31,5 +31,5 @@
  */
 class CollectableBanknote
         extends CollectableCurrency {
-    
+    //put your code here
 }

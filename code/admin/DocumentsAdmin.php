@@ -27,36 +27,30 @@
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
- * @version 1.0, Dec 4, 2016 - 11:05:06 AM
+ * @version 1.0, Feb 1, 2017 - 10:31:28 AM
  */
-class CollectableOrigin
-        extends DataObject {
+class DocumentsAdmin
+        extends ModelAdmin {
 
-    private static $db = array(
-        'Name' => 'Varchar(255)',
+    private static $managed_models = array(
+        'CollectableDocument',
     );
-    private static $has_one = array(
-    );
-    private static $has_many = array(
-        'Collectables' => 'Collectable',
-    );
-    private static $belongs_many_many = array(
-    );
-    private static $searchable_fields = array(
-        'Name',
-    );
-    private static $summary_fields = array(
-        'Name',
-        'Collectables.Count',
-    );
+    private static $url_segment = 'documents';
+    private static $menu_title = "Documents";
+    private static $menu_icon = "collectors/images/docs.png";
+    public $showImportForm = false;
+    private static $tree_class = 'Documents';
 
-    public function fieldLabels($includerelations = true) {
-        $labels = parent::fieldLabels($includerelations);
+    public function getEditForm($id = null, $fields = null) {
+        $form = parent::getEditForm($id, $fields);
 
-        $labels['Name'] = _t('Collectors.NAME', 'Name');
-        $labels['Collectables.Count'] = _t('Collectors.NUMBER_OF_COLLECTABLE', 'Number Of Collectables');
+        $grid = $form->Fields()->dataFieldByName('Collectors');
+        if ($grid) {
+            $grid->getConfig()->removeComponentsByType('GridFieldDetailForm');
+            $grid->getConfig()->addComponent(new GridFieldSubsiteDetailForm());
+        }
 
-        return $labels;
+        return $form;
     }
 
 }

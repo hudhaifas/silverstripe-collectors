@@ -111,14 +111,16 @@ class CollectablesPage_Controller
     }
 
     protected function getFiltersList() {
-        $lists = array(
-            array(
-                'Title' => 'Categories',
-                'Items' => $this->getObjectsList()->Limit(6)
-            )
-        );
-
-        return new ArrayList($lists);
+//        $lists = array(
+//            array(
+//                'Title' => 'Categories',
+//                'Items' => $this->getObjectsList()->Limit(6)
+//            )
+//        );
+//
+//        return new ArrayList($lists);
+//        
+        return null;
     }
 
 }

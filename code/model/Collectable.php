@@ -212,7 +212,7 @@ class Collectable
     public function getObjectTitle() {
         $title = '';
 
-        if ($this->$this->Title) {
+        if ($this->Title) {
             $title = $this->Title;
         }
 

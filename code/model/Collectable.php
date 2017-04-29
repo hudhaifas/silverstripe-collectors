@@ -40,6 +40,7 @@ class Collectable
         'Description' => 'Text',
         'Collector' => 'Varchar(255)',
         'Explanations' => 'Text',
+        'IsPrivate' => 'Boolean',
     );
     private static $has_one = array(
         'FrontImage' => 'Image',
@@ -84,6 +85,7 @@ class Collectable
         $labels['Explanations'] = _t('Collectors.EXPLANATIONS', 'Explanations');
         $labels['Summary'] = _t('Collectors.SUMMARY', 'Summary');
         $labels['Collector'] = _t('Collectors.COLLECTOR', 'Collector');
+        $labels['IsPrivate'] = _t('Collectors.IS_PRIVATE', 'Private Document');
 
         $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
 
@@ -107,6 +109,7 @@ class Collectable
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
 
+        $this->reorderField($fields, 'IsPrivate', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Explanations', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Details');
@@ -124,7 +127,14 @@ class Collectable
     }
 
     function Link($action = null) {
-        return Director::get_current_page()->Link("show/$this->ID");
+        $page = CollectablesPage::get()
+                ->filter(array(
+                    'Collection' => $this->ClassName
+                ))
+                ->first();
+
+        return $page->Link("show/$this->ID");
+//        return Director::get_current_page()->Link("show/$this->ID");
     }
 
     public function Subtitle() {
@@ -156,6 +166,10 @@ class Collectable
 
     function canEdit($member = false) {
         return CollectorsHelper::is_collector($member);
+    }
+
+    public function hasPermission() {
+        return CollectorsHelper::is_collector();
     }
 
     /// Single Data Object ///
@@ -206,7 +220,7 @@ class Collectable
     }
 
     public function isObjectDisabled() {
-        return false;
+        return $this->IsPrivate && !$this->hasPermission();
     }
 
     public function getObjectTitle() {

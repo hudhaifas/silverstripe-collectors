@@ -27,6 +27,8 @@ en:
     SINGULARNAME: 'Stamps'
   CollectableCollection:
     SINGULARNAME: 'Collections'
+  CollectableArticle:
+    SINGULARNAME: 'Articles'
   Collectors:
     IMAGE: 'Image'
     DETAILS: 'Details'
@@ -59,3 +61,5 @@ en:
     IS_PRIVATE: 'Private Doc'
     EXPLANATIONS: 'Explanations'
     COLLECTORS: 'Collectors'
+    CONTENT: 'Content'
+    AUTHOR: 'Author'

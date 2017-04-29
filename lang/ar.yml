@@ -27,6 +27,8 @@ ar:
     SINGULARNAME: 'الطوابع'
   CollectableCollection:
     SINGULARNAME: 'المجموعات'
+  CollectableArticle:
+    SINGULARNAME: 'المقالات'
   Collectors:
     IMAGE: 'الصورة'
     DETAILS: 'التفاصيل'
@@ -59,3 +61,5 @@ ar:
     IS_PRIVATE: 'وثيقة خاصة'
     EXPLANATIONS: 'الشروحات'
     COLLECTABLES: 'المقتنيات'    
+    CONTENT: 'النص'
+    AUTHOR: 'الكاتب'

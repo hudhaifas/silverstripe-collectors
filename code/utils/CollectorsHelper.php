@@ -48,7 +48,8 @@ class CollectorsHelper {
             $member = Member::currentUser();
         }
 
-        return true;
+        $groups = Config::inst()->get('GenealogistHelper', 'access_groups');
+        return $member && $member->inGroups($groups);
     }
 
     public static function search_all_collectables($request, $term) {

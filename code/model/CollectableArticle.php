@@ -27,21 +27,23 @@
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
- * @version 1.0, Jan 27, 2017 - 10:04:26 AM
+ * @version 1.0, Apr 29, 2017 - 12:13:52 PM
  */
-class CollectableDocument
+class CollectableArticle
         extends Collectable {
 
     private static $db = array(
+        'Author' => 'Varchar(255)',
         'Date' => 'Date',
-        'Texts' => 'HTMLText',
+        'Content' => 'HTMLText',
     );
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
+        $labels['Author'] = _t('Collectors.AUTHOR', 'Author');
         $labels['Date'] = _t('Collectors.DATE', 'Date');
-        $labels['Texts'] = _t('Collectors.TEXTS', 'Texts');
+        $labels['Content'] = _t('Collectors.CONTENT', 'Content');
 
         return $labels;
     }
@@ -49,17 +51,14 @@ class CollectableDocument
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
-            $field->setFolderName("collectors/docs");
-        }
+        $fields->removeFieldFromTab('Root.Main', 'FrontImage');
 
-        $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
-
+        $this->reorderField($fields, 'Author', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
-        $this->reorderField($fields, 'Texts', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Content', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Collector', 'Root.Details', 'Root.Details');
         $this->reorderField($fields, 'Collections', 'Root.Details', 'Root.Details');
@@ -76,6 +75,13 @@ class CollectableDocument
         if ($this->Subtitle()) {
             $lists[] = array(
                 'Value' => $this->Subtitle()
+            );
+        }
+
+        if ($this->Author) {
+            $lists[] = array(
+                'Title' => _t('Collectors.AUTHOR', 'Author'),
+                'Value' => $this->Author
             );
         }
 
@@ -108,10 +114,10 @@ class CollectableDocument
         $tabs = parent::getObjectTabs();
 
         $lists = $tabs->toArray();
-        if ($this->Texts) {
+        if ($this->Content) {
             $lists[] = array(
-                'Title' => _t('Collectors.TEXTS', 'Texts'),
-                'Content' => $this->Texts
+                'Title' => _t('Collectors.CONTENT', 'Content'),
+                'Content' => $this->Content
             );
         }
 

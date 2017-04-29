@@ -33,7 +33,7 @@ class CollectablesPage
         extends DataObjectPage {
 
     private static $db = array(
-        'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp, CollectableArtwork, CollectableDocument, CollectableTextual', 'Collectable')",
+        'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp, CollectableArtwork, CollectableDocument, CollectableTextual, CollectableArticle', 'Collectable')",
     );
 
     /**
@@ -95,7 +95,14 @@ class CollectablesPage_Controller
         extends DataObjectPage_Controller {
 
     protected function getObjectsList() {
-        return DataObject::get($this->Collection);
+        if ($this->hasPermission()) {
+            return DataObject::get($this->Collection);
+        } else {
+            return DataObject::get($this->Collection)
+                            ->filterAny(array(
+                                'IsPrivate' => 0
+            ));
+        }
     }
 
     protected function searchObjects($list, $keywords) {
@@ -121,6 +128,10 @@ class CollectablesPage_Controller
 //        return new ArrayList($lists);
 //        
         return null;
+    }
+
+    public function hasPermission() {
+        return CollectorsHelper::is_collector();
     }
 
 }

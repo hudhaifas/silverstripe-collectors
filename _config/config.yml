@@ -13,3 +13,7 @@ CollectorsAdmin:
 DocumentsAdmin:
   extensions:
     - SubsiteMenuExtension
+    
+ArticlesAdmin:
+  extensions:
+    - SubsiteMenuExtension

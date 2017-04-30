@@ -53,6 +53,11 @@ class CollectableArticle
 
         $fields->removeFieldFromTab('Root.Main', 'FrontImage');
 
+        if ($field = $fields->fieldByName('Root.Main.Date')) {
+            $field->setConfig('showcalendar', true);
+            $field->setConfig('dateformat', 'dd-MM-yyyy');
+        }
+
         $this->reorderField($fields, 'Author', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Date', 'Root.Main', 'Root.Main');

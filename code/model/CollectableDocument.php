@@ -53,6 +53,11 @@ class CollectableDocument
             $field->setFolderName("collectors/docs");
         }
 
+        if ($field = $fields->fieldByName('Root.Main.Date')) {
+            $field->setConfig('showcalendar', true);
+            $field->setConfig('dateformat', 'dd-MM-yyyy');
+        }
+
         $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');

@@ -45,6 +45,9 @@ class Collectable
     private static $has_one = array(
         'FrontImage' => 'Image',
     );
+    private static $has_many = array(
+        'OtherImages' => 'CollectableImage',
+    );
     private static $many_many = array(
         'Collections' => 'CollectableCollection',
     );
@@ -78,6 +81,7 @@ class Collectable
 
         $labels['FrontImage'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
         $labels['FrontImage.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+        $labels['OtherImages'] = _t('Collectors.OTHER_IMAGES', 'Other Images');
 
         $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
         $labels['Title'] = _t('Collectors.TITLE', 'Title');
@@ -140,7 +144,7 @@ class Collectable
     public function Subtitle() {
         $subtitle = '';
         if ($this->Title) {
-            $subtitle = $this->Title;
+//            $subtitle = $this->Title;
         }
 
         return $subtitle;
@@ -206,6 +210,13 @@ class Collectable
 
     public function getObjectTabs() {
         $lists = array();
+
+        if ($this->OtherImages()->Count()) {
+            $lists[] = array(
+                'Title' => _t('Collectors.OTHER_IMAGES', 'Other Images'),
+                'Content' => $this->renderWith('Tab_OtherImages')
+            );
+        }
 
         if ($this->Explanations) {
             $lists[] = array(

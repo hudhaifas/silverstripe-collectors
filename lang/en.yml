@@ -29,6 +29,8 @@ en:
     SINGULARNAME: 'Collections'
   CollectableArticle:
     SINGULARNAME: 'Articles'
+  CollectableImage:
+    SINGULARNAME: 'Other Images'
   Collectors:
     IMAGE: 'Image'
     DETAILS: 'Details'
@@ -63,3 +65,6 @@ en:
     COLLECTORS: 'Collectors'
     CONTENT: 'Content'
     AUTHOR: 'Author'
+    COLLECTABLE: 'Collectable'
+    OTHER_IMAGES: 'Other Images'
+    PEOPLE: 'People'

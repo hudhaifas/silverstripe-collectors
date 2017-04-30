@@ -29,6 +29,8 @@ ar:
     SINGULARNAME: 'المجموعات'
   CollectableArticle:
     SINGULARNAME: 'المقالات'
+  CollectableImage:
+    SINGULARNAME: 'صور أخرى'
   Collectors:
     IMAGE: 'الصورة'
     DETAILS: 'التفاصيل'
@@ -63,3 +65,6 @@ ar:
     COLLECTABLES: 'المقتنيات'    
     CONTENT: 'النص'
     AUTHOR: 'الكاتب'
+    COLLECTABLE: 'المجمع'
+    OTHER_IMAGES: 'صور أخرى'
+    PEOPLE: 'الشخوص'

@@ -137,7 +137,7 @@ class Collectable
                 ))
                 ->first();
 
-        return $page->Link("show/$this->ID");
+        return $page ? $page->Link("show/$this->ID") : null;
 //        return Director::get_current_page()->Link("show/$this->ID");
     }
 

@@ -5,6 +5,8 @@ ar:
     MENUTITLE: 'هواة الجمع'
   DocumentsAdmin:
     MENUTITLE: 'الوثائق'
+  ArticlesAdmin:
+    MENUTITLE: 'المقالات'
   Collectable:
     SINGULARNAME: 'مجمع'
   CollectableCurrency:

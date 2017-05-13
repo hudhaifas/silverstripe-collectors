@@ -108,4 +108,8 @@ class CollectableStamp
         return new ArrayList($lists);
     }
 
+    public function getObjectDefaultImage() {
+        return "genealogist/images/default-stamp.png";
+    }
+
 }

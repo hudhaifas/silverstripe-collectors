@@ -182,6 +182,10 @@ class Collectable
         return $this->FrontImage();
     }
 
+    public function getObjectDefaultImage() {
+        return null;
+    }
+
     public function getObjectLink() {
         return $this->Link();
     }

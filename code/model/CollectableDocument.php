@@ -123,4 +123,8 @@ class CollectableDocument
         return new ArrayList($lists);
     }
 
+    public function getObjectDefaultImage() {
+        return "genealogist/images/default-doc.jpg";
+    }
+
 }

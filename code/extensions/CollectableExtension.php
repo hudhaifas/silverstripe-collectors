@@ -29,7 +29,7 @@ class CollectableExtension
                 'Title' => _t('Collectors.COLLECTABLES', 'Collectables'),
                 'Content' => $this->owner
                         ->customise(array(
-                            'Results' => $collectables->sort('Name ASC')
+                            'Results' => $collectables->sort('Title ASC')
                         ))
                         ->renderWith('List_Grid')
             );

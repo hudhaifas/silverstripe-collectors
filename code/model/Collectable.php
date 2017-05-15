@@ -179,7 +179,7 @@ class Collectable
     /// Single Data Object ///
 
     public function getObjectImage() {
-        return $this->FrontImage();
+        return $this->FrontImage()->Watermark();
     }
 
     public function getObjectDefaultImage() {

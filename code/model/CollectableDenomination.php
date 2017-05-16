@@ -72,6 +72,7 @@ class CollectableDenomination
         'Country',
         'Quantity',
     );
+    private static $default_sort = 'Year';
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);

@@ -37,6 +37,7 @@ class CollectableArticle
         'Date' => 'Date',
         'Content' => 'HTMLText',
     );
+    private static $default_sort = 'Date';
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);

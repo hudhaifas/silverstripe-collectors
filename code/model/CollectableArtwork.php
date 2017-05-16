@@ -37,6 +37,7 @@ class CollectableArtwork
         'Texts' => 'HTMLText',
         'Artist' => 'Varchar(255)',
     );
+    private static $default_sort = 'Date';
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);

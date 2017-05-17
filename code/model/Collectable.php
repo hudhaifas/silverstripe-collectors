@@ -191,7 +191,11 @@ class Collectable
     }
 
     public function getObjectRelated() {
-        return $this->get()->sort('RAND()');
+        return $this->get()
+                        ->filterAny(array(
+                            'IsPrivate' => 0
+                        ))
+                        ->sort('RAND()');
     }
 
     public function getObjectSummary() {

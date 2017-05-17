@@ -125,7 +125,7 @@ class CollectableDocument
     }
 
     public function getObjectDefaultImage() {
-        return "genealogist/images/default-doc.jpg";
+        return "collectors/images/default-doc.jpg";
     }
 
 }

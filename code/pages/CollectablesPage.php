@@ -33,7 +33,7 @@ class CollectablesPage
         extends DataObjectPage {
 
     private static $db = array(
-        'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp, CollectableArtwork, CollectableDocument, CollectableTextual, CollectableArticle', 'Collectable')",
+        'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp, CollectableArtwork, CollectableArticle, CollectableDocument, CollectablePhoto', 'Collectable')",
     );
 
     /**

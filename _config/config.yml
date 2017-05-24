@@ -2,18 +2,10 @@
 Name: collectors
 ---
 
-ArtworksAdmin:
+ArchivesAdmin:
   extensions:
     - SubsiteMenuExtension
 
 CollectorsAdmin:
-  extensions:
-    - SubsiteMenuExtension
-
-DocumentsAdmin:
-  extensions:
-    - SubsiteMenuExtension
-    
-ArticlesAdmin:
   extensions:
     - SubsiteMenuExtension

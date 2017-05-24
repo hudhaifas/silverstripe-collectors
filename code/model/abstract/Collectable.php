@@ -92,6 +92,7 @@ class Collectable
         $labels['IsPrivate'] = _t('Collectors.IS_PRIVATE', 'Private Document');
 
         $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
+        $labels['People'] = _t('Collectors.PEOPLE', 'People');
 
         return $labels;
     }

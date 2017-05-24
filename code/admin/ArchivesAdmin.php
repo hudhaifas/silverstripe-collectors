@@ -29,17 +29,20 @@
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
  * @version 1.0, Feb 1, 2017 - 10:31:28 AM
  */
-class DocumentsAdmin
+class ArchivesAdmin
         extends ModelAdmin {
 
     private static $managed_models = array(
         'CollectableDocument',
+        'CollectablePhoto',
+        'CollectableArticle',
+        'CollectableArtwork',
     );
-    private static $url_segment = 'documents';
-    private static $menu_title = "Documents";
+    private static $url_segment = 'archives';
+    private static $menu_title = "Archives";
     private static $menu_icon = "collectors/images/docs.png";
     public $showImportForm = false;
-    private static $tree_class = 'Documents';
+    private static $tree_class = 'Archives';
 
     public function getEditForm($id = null, $fields = null) {
         $form = parent::getEditForm($id, $fields);

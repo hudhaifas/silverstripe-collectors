@@ -1,12 +1,8 @@
 ar:
-  ArtworksAdmin:
-    MENUTITLE: 'الأعمال الفنية'
+  ArchivesAdmin:
+    MENUTITLE: 'الأرشيف'
   CollectorsAdmin:
     MENUTITLE: 'هواة الجمع'
-  DocumentsAdmin:
-    MENUTITLE: 'الوثائق'
-  ArticlesAdmin:
-    MENUTITLE: 'المقالات'
   Collectable:
     SINGULARNAME: 'مجمع'
   CollectableCurrency:
@@ -15,8 +11,6 @@ ar:
     SINGULARNAME: 'الوثائق'
   CollectableArtwork:
     SINGULARNAME: 'الأعمال الفنية'
-  CollectableTextual:
-    SINGULARNAME: 'الأعمال الفنية الخطية'
   CurrencySet:
     SINGULARNAME: 'إصدارات نقدية'
   CollectableBanknote:
@@ -31,6 +25,8 @@ ar:
     SINGULARNAME: 'المجموعات'
   CollectableArticle:
     SINGULARNAME: 'المقالات'
+  CollectablePhoto:
+    SINGULARNAME: 'الصور'
   CollectableImage:
     SINGULARNAME: 'صور أخرى'
   Collectors:

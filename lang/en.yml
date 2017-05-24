@@ -1,10 +1,8 @@
 en:
-  ArtworksAdmin:
-    MENUTITLE: 'Artworks'
+  ArchivesAdmin:
+    MENUTITLE: 'Archives'
   CollectorsAdmin:
     MENUTITLE: 'Collectors'
-  DocumentsAdmin:
-    MENUTITLE: 'Documents'
   Collectable:
     SINGULARNAME: 'Collectables'
   CollectableCurrency:
@@ -13,8 +11,6 @@ en:
     SINGULARNAME: 'Documents'
   CollectableArtwork:
     SINGULARNAME: 'Artworks'
-  CollectableTextual:
-    SINGULARNAME: 'Textual Artworks'
   CurrencySet:
     SINGULARNAME: 'Currency Sets'
   CollectableBanknote:
@@ -29,6 +25,8 @@ en:
     SINGULARNAME: 'Collections'
   CollectableArticle:
     SINGULARNAME: 'Articles'
+  CollectablePhoto:
+    SINGULARNAME: 'Photos'
   CollectableImage:
     SINGULARNAME: 'Other Images'
   Collectors:

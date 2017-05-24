@@ -38,7 +38,6 @@ class CollectorsAdmin
         'CollectableStamp',
         'CollectableDocument',
         'CollectableArtwork',
-        'CollectableTextual',
         'CollectableCollection',
     );
     private static $url_segment = 'collectors';

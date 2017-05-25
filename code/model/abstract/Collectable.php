@@ -40,7 +40,9 @@ class Collectable
         'Description' => 'Text',
         'Collector' => 'Varchar(255)',
         'Explanations' => 'Text',
-        'IsPrivate' => 'Boolean',
+        // Permession Level
+        "CanViewType" => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')",
+        "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",
     );
     private static $has_one = array(
         'FrontImage' => 'Image',
@@ -50,6 +52,14 @@ class Collectable
     );
     private static $many_many = array(
         'Collections' => 'CollectableCollection',
+        "ViewerGroups" => "Group",
+        "EditorGroups" => "Group",
+        "ViewerMembers" => "Member",
+        "EditorMembers" => "Member",
+    );
+    private static $defaults = array(
+        "CanViewType" => "LoggedInUsers",
+        "CanEditType" => "OnlyTheseUsers"
     );
     private static $searchable_fields = array(
         'Title' => array(
@@ -75,6 +85,7 @@ class Collectable
         'Summary',
         'Description',
     );
+    private static $cache_permissions = array();
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
@@ -89,10 +100,13 @@ class Collectable
         $labels['Explanations'] = _t('Collectors.EXPLANATIONS', 'Explanations');
         $labels['Summary'] = _t('Collectors.SUMMARY', 'Summary');
         $labels['Collector'] = _t('Collectors.COLLECTOR', 'Collector');
-        $labels['IsPrivate'] = _t('Collectors.IS_PRIVATE', 'Private Document');
 
         $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
         $labels['People'] = _t('Collectors.PEOPLE', 'People');
+
+        // Settings
+        $labels['CanViewType'] = _t('Collectors.CAN_VIEW_TYPE', 'Who can view this person');
+        $labels['CanEditType'] = _t('Collectors.CAN_EDIT_TYPE', 'Who can edit this person');
 
         return $labels;
     }
@@ -114,7 +128,6 @@ class Collectable
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Main');
 
-        $this->reorderField($fields, 'IsPrivate', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'SerialNumber', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Explanations', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Details');
@@ -128,7 +141,69 @@ class Collectable
         );
         $fields->addFieldToTab('Root.Details', $collectionsField);
 
+        $this->getSettingsFields($fields);
+
         return $fields;
+    }
+
+    public function getSettingsFields(&$fields) {
+        // Prepare groups and members lists
+        $groupsMap = array();
+        foreach (Group::get() as $group) {
+            // Listboxfield values are escaped, use ASCII char instead of &raquo;
+            $groupsMap[$group->ID] = $group->getBreadcrumbs(' > ');
+        }
+        asort($groupsMap);
+
+        $membersMap = array();
+        foreach (Member::get() as $member) {
+            // Listboxfield values are escaped, use ASCII char instead of &raquo;
+            $membersMap[$member->ID] = $member->getTitle();
+        }
+        asort($membersMap);
+
+        // Remove existing fields
+        $fields->removeFieldFromTab('Root.ViewerGroups', 'ViewerGroups');
+        $fields->removeFieldFromTab('Root', 'ViewerGroups');
+        $fields->removeFieldFromTab('Root.ViewerMembers', 'ViewerMembers');
+        $fields->removeFieldFromTab('Root', 'ViewerMembers');
+        $fields->removeFieldFromTab('Root.EditorGroups', 'EditorGroups');
+        $fields->removeFieldFromTab('Root', 'EditorGroups');
+        $fields->removeFieldFromTab('Root.EditorMembers', 'EditorMembers');
+        $fields->removeFieldFromTab('Root', 'EditorMembers');
+
+        // Prepare Settings tab
+        $settingsTab = new Tab('SettingsTab', _t('Collectors.SETTINGS', 'Settings'));
+        $fields->insertAfter('Main', $settingsTab);
+
+        $this->reorderField($fields, 'CanViewType', 'Root.Main', 'Root.SettingsTab');
+
+        $viewerGroupsField = ListboxField::create("ViewerGroups", _t('Collectors.VIEWER_GROUPS', "Viewer Groups"))
+                ->setMultiple(true)
+                ->setSource($groupsMap)
+                ->setAttribute('data-placeholder', _t('Collectors.GROUP_PLACEHOLDER', 'Click to select group'));
+        $fields->addFieldToTab('Root.SettingsTab', $viewerGroupsField);
+
+        $viewerMembersField = ListboxField::create("ViewerMembers", _t('Collectors.VIEWER_MEMBERS', "Viewer Users"))
+                ->setMultiple(true)
+                ->setSource($membersMap)
+                ->setAttribute('data-placeholder', _t('Collectors.MEMBER_PLACEHOLDER', 'Click to select user'));
+        $fields->addFieldToTab('Root.SettingsTab', $viewerMembersField);
+
+
+        $this->reorderField($fields, 'CanEditType', 'Root.Main', 'Root.SettingsTab');
+
+        $editorGroupsField = ListboxField::create("EditorGroups", _t('Collectors.EDITOR_GROUPS', "Editor Groups"))
+                ->setMultiple(true)
+                ->setSource($groupsMap)
+                ->setAttribute('data-placeholder', _t('Collectors.GROUP_PLACEHOLDER', 'Click to select group'));
+        $fields->addFieldToTab('Root.SettingsTab', $editorGroupsField);
+
+        $editorMembersField = ListboxField::create("EditorMembers", _t('Collectors.EDITOR_MEMBERS', "Editor Users"))
+                ->setMultiple(true)
+                ->setSource($membersMap)
+                ->setAttribute('data-placeholder', _t('Collectors.MEMBER_PLACEHOLDER', 'Click to select user'));
+        $fields->addFieldToTab('Root.SettingsTab', $editorMembersField);
     }
 
     function Link($action = null) {
@@ -158,23 +233,174 @@ class Collectable
     /// Permissions ///
 
     function canCreate($member = false) {
-        return CollectorsHelper::is_collector($member);
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $cachedPermission = self::cache_permission_check('create', $member, $this->ID);
+        if (isset($cachedPermission)) {
+            return $cachedPermission;
+        }
+
+        if ($member && Permission::checkMember($member, "ADMIN")) {
+            return true;
+        }
+
+        $extended = $this->extendedCan('canDeleteCollectables', $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
+        return false;
     }
 
-    function canView($member = false) {
-        return CollectorsHelper::is_collector($member);
+    public function canView($member = false) {
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $cachedPermission = self::cache_permission_check('view', $member, $this->ID);
+        if (isset($cachedPermission)) {
+            return $cachedPermission;
+        }
+
+        if ($this->canEdit($member)) {
+            return self::cache_permission_check('view', $member, $this->ID, true);
+        }
+
+        $extended = $this->extendedCan('canViewCollectables', $member);
+        if ($extended !== null) {
+            return self::cache_permission_check('view', $member, $this->ID, $extended);
+        }
+
+        if (!$this->CanViewType || $this->CanViewType == 'Anyone') {
+            return self::cache_permission_check('view', $member, $this->ID, true);
+        }
+
+        // check for inherit
+        if ($this->CanViewType == 'Inherit') {
+            if ($this->FatherID && !$this->Father()->isClan()) {
+                return self::cache_permission_check('view', $member, $this->ID, $this->Father()->canView($member));
+            }
+        }
+
+        // check for any logged-in users
+        if ($this->CanViewType === 'LoggedInUsers' && $member) {
+            return self::cache_permission_check('view', $member, $this->ID, true);
+        }
+
+        // check for specific groups && users
+        if ($this->CanViewType === 'OnlyTheseUsers' && $member && ($member->inGroups($this->ViewerGroups()) || $this->ViewerMembers()->byID($member->ID))) {
+            return self::cache_permission_check('view', $member, $this->ID, true);
+        }
+
+        return self::cache_permission_check('view', $member, $this->ID, false);
     }
 
-    function canDelete($member = false) {
-        return CollectorsHelper::is_collector($member);
+    public function canDelete($member = false) {
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $cachedPermission = self::cache_permission_check('delete', $member, $this->ID);
+        if (isset($cachedPermission)) {
+            return $cachedPermission;
+        }
+
+        if ($member && Permission::checkMember($member, "ADMIN")) {
+            return true;
+        }
+
+        $extended = $this->extendedCan('canDeleteCollectables', $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
+        return false;
     }
 
-    function canEdit($member = false) {
-        return CollectorsHelper::is_collector($member);
+    public function canEdit($member = false) {
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $cachedPermission = self::cache_permission_check('edit', $member, $this->ID);
+        if (isset($cachedPermission)) {
+            return $cachedPermission;
+        }
+
+        if ($member && Permission::checkMember($member, "ADMIN")) {
+            return self::cache_permission_check('edit', $member, $this->ID, true);
+        }
+
+        if ($member && $this->hasMethod('CreatedBy') && $member == $this->CreatedBy()) {
+            return self::cache_permission_check('edit', $member, $this->ID, true);
+        }
+
+        $extended = $this->extendedCan('canEditCollectables', $member);
+        if ($extended !== null) {
+            return self::cache_permission_check('edit', $member, $this->ID, $extended);
+        }
+
+        // check for inherit
+        if ($this->CanEditType == 'Inherit') {
+            if ($this->FatherID) {
+                return self::cache_permission_check('edit', $member, $this->ID, $this->Father()->canEdit($member));
+            }
+        }
+
+        // check for any logged-in users with CMS access
+        if ($this->CanEditType === 'LoggedInUsers' && Permission::checkMember($member, $this->config()->required_permission)) {
+            return self::cache_permission_check('edit', $member, $this->ID, true);
+        }
+
+        // check for specific groups
+        if ($this->CanEditType === 'OnlyTheseUsers' && $member && ($member->inGroups($this->EditorGroups()) || $this->EditorMembers()->byID($member->ID))) {
+            return self::cache_permission_check('edit', $member, $this->ID, true);
+        }
+
+        return self::cache_permission_check('edit', $member, $this->ID, false);
     }
 
-    public function hasPermission() {
-        return CollectorsHelper::is_collector();
+    public static function cache_permission_check($typeField, $member, $personID, $result = null) {
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $memberID = $member ? $member->ID : '?';
+
+        // This is the name used on the permission cache
+        // converts something like 'CanEditType' to 'edit'.
+        $cacheKey = strtolower($typeField) . "-$memberID-$personID";
+
+        if (isset(self::$cache_permissions[$cacheKey])) {
+            $cachedValues = self::$cache_permissions[$cacheKey];
+            return $cachedValues;
+        }
+
+        self::$cache_permissions[$cacheKey] = $result;
+
+        return self::$cache_permissions[$cacheKey];
     }
 
     /// Single Data Object ///
@@ -193,9 +419,9 @@ class Collectable
 
     public function getObjectRelated() {
         return $this->get()
-                        ->filterAny(array(
-                            'IsPrivate' => 0
-                        ))
+                        ->filterByCallback(function($record) {
+                            return $record->canView();
+                        })
                         ->sort('RAND()');
     }
 
@@ -240,7 +466,7 @@ class Collectable
     }
 
     public function isObjectDisabled() {
-        return $this->IsPrivate && !$this->hasPermission();
+        return !$this->canView();
     }
 
     public function getObjectTitle() {

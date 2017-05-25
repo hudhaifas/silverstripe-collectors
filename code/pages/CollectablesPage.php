@@ -95,14 +95,7 @@ class CollectablesPage_Controller
         extends DataObjectPage_Controller {
 
     protected function getObjectsList() {
-        if ($this->hasPermission()) {
-            return DataObject::get($this->Collection);
-        } else {
-            return DataObject::get($this->Collection)
-                            ->filterAny(array(
-                                'IsPrivate' => 0
-            ));
-        }
+        return DataObject::get($this->Collection);
     }
 
     protected function searchObjects($list, $keywords) {
@@ -128,10 +121,6 @@ class CollectablesPage_Controller
 //        return new ArrayList($lists);
 //        
         return null;
-    }
-
-    public function hasPermission() {
-        return CollectorsHelper::is_collector();
     }
 
 }

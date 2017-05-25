@@ -9,3 +9,7 @@ ArchivesAdmin:
 CollectorsAdmin:
   extensions:
     - SubsiteMenuExtension
+      
+Person:
+  extensions:
+    - DataObject_MemberExtension

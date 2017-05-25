@@ -66,3 +66,14 @@ en:
     COLLECTABLE: 'Collectable'
     OTHER_IMAGES: 'Other Images'
     PEOPLE: 'People'
+
+    # Settings
+    SETTINGS: 'Settings'
+    CAN_VIEW_TYPE: 'Who can view this person?'
+    VIEWER_GROUPS: 'Viewer Groups'
+    VIEWER_MEMBERS: 'Viewer Users'
+    CAN_EDIT_TYPE: 'Who can edit this person?'
+    EDITOR_GROUPS: 'Editor Groups'
+    EDITOR_MEMBERS: 'Editor Users'
+    GROUP_PLACEHOLDER: 'Click to select group'
+    MEMBER_PLACEHOLDER: 'Click to select user'    

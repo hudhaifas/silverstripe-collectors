@@ -80,6 +80,32 @@ class CollectableArtwork
         return $fields;
     }
 
+    public function canCreate($member = false) {
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $cachedPermission = self::cache_permission_check('create', $member, $this->ID);
+        if (isset($cachedPermission)) {
+            return $cachedPermission;
+        }
+
+        if ($member && Permission::checkMember($member, "ADMIN")) {
+            return true;
+        }
+
+        $extended = $this->extendedCan('canCreateCollectables', $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
+        return false;
+    }
+
     public function getObjectSummary() {
         $lists = array();
 

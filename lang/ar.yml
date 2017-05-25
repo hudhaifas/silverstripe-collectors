@@ -68,7 +68,7 @@ ar:
     PEOPLE: 'الشخوص'
 
     # Settings
-    SETTINGS: 'الإعدادات'
+    SETTINGS: 'إعدادات الخصوصية'
     CAN_VIEW_TYPE: 'من يستطيع مشاهدة هذا الشخص؟'
     VIEWER_GROUPS: 'مجموعات الزوار'
     VIEWER_MEMBERS: 'الأعضاء الزوار'

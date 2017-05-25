@@ -68,7 +68,7 @@ en:
     PEOPLE: 'People'
 
     # Settings
-    SETTINGS: 'Settings'
+    SETTINGS: 'Privacy Settings'
     CAN_VIEW_TYPE: 'Who can view this person?'
     VIEWER_GROUPS: 'Viewer Groups'
     VIEWER_MEMBERS: 'Viewer Users'

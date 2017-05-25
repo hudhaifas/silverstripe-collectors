@@ -60,12 +60,18 @@ ar:
     UNUSED: 'غير مستخدم'
     IS_PRIVATE: 'وثيقة خاصة'
     EXPLANATIONS: 'الشروحات'
-    COLLECTABLES: 'المقتنيات'    
     CONTENT: 'النص'
     AUTHOR: 'الكاتب'
     COLLECTABLE: 'المجمع'
     OTHER_IMAGES: 'صور أخرى'
     PEOPLE: 'الشخوص'
+
+    # Extension
+    COLLECTABLES: 'المقتنيات'    
+    DOCUMENTS: 'الوثائق'    
+    ARTICLES: 'المقالات'    
+    PHOTOS: 'الصور'
+    ARTWORKS: 'الأعمال الفنية'
 
     # Settings
     SETTINGS: 'إعدادات الخصوصية'

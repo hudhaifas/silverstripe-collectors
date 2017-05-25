@@ -67,6 +67,13 @@ en:
     OTHER_IMAGES: 'Other Images'
     PEOPLE: 'People'
 
+    # Extension
+    COLLECTABLES: 'Collectables'    
+    DOCUMENTS: 'Documents'    
+    ARTICLES: 'Articles'    
+    PHOTOS: 'Photos'
+    ARTWORKS: 'Artworks'
+
     # Settings
     SETTINGS: 'Privacy Settings'
     CAN_VIEW_TYPE: 'Who can view this person?'

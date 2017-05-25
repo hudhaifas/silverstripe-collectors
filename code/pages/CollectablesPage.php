@@ -95,7 +95,10 @@ class CollectablesPage_Controller
         extends DataObjectPage_Controller {
 
     protected function getObjectsList() {
-        return DataObject::get($this->Collection);
+        return DataObject::get($this->Collection)
+                        ->filterByCallback(function($record) {
+                            return $record->canView();
+                        });
     }
 
     protected function searchObjects($list, $keywords) {

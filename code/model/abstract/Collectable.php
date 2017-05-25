@@ -231,8 +231,7 @@ class Collectable
     }
 
     /// Permissions ///
-
-    function canCreate($member = false) {
+    public function canCreate($member = false) {
         if (!$member) {
             $member = Member::currentUserID();
         }
@@ -250,7 +249,7 @@ class Collectable
             return true;
         }
 
-        $extended = $this->extendedCan('canDeleteCollectables', $member);
+        $extended = $this->extendedCan('canCreateCollectables', $member);
         if ($extended !== null) {
             return $extended;
         }
@@ -283,13 +282,6 @@ class Collectable
 
         if (!$this->CanViewType || $this->CanViewType == 'Anyone') {
             return self::cache_permission_check('view', $member, $this->ID, true);
-        }
-
-        // check for inherit
-        if ($this->CanViewType == 'Inherit') {
-            if ($this->FatherID && !$this->Father()->isClan()) {
-                return self::cache_permission_check('view', $member, $this->ID, $this->Father()->canView($member));
-            }
         }
 
         // check for any logged-in users
@@ -358,13 +350,6 @@ class Collectable
             return self::cache_permission_check('edit', $member, $this->ID, $extended);
         }
 
-        // check for inherit
-        if ($this->CanEditType == 'Inherit') {
-            if ($this->FatherID) {
-                return self::cache_permission_check('edit', $member, $this->ID, $this->Father()->canEdit($member));
-            }
-        }
-
         // check for any logged-in users with CMS access
         if ($this->CanEditType === 'LoggedInUsers' && Permission::checkMember($member, $this->config()->required_permission)) {
             return self::cache_permission_check('edit', $member, $this->ID, true);
@@ -404,7 +389,6 @@ class Collectable
     }
 
     /// Single Data Object ///
-
     public function getObjectImage() {
         return $this->FrontImage();
     }
@@ -418,11 +402,16 @@ class Collectable
     }
 
     public function getObjectRelated() {
-        return $this->get()
-                        ->filterByCallback(function($record) {
-                            return $record->canView();
-                        })
-                        ->sort('RAND()');
+        $list = $this->get()
+                ->filter(array(
+                    'ID:Negation' => $this->ID
+                ))
+                ->filterByCallback(function($record) {
+                    return $record->canView();
+                })
+                ->sort('RAND()');
+
+        return $list;
     }
 
     public function getObjectSummary() {

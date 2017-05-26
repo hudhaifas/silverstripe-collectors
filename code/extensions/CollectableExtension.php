@@ -37,21 +37,51 @@ class CollectableExtension
     );
 
     public function updateCMSFields(FieldList $fields) {
-        
+        $fields->removeFieldFromTab('Root.Collectables', 'Collectables');
+        $fields->removeFieldFromTab('Root', 'Collectables');
+
+        $collectables = $this->owner->Collectables();
+
+        $subLists = $this->getCollectableLists();
+
+        $documentsTab = new Tab('DocumentsTab', _t('Collectors.DOCUMENTS', 'Documents'));
+        $fields->insertAfter('Main', $documentsTab);
+        $fields->addFieldToTab('Root.DocumentsTab', $this->createGridField('CollectableDocuments', _t('Collectors.DOCUMENTS', 'Documents'), $subLists['Documents'], 'CollectableDocument'));
+
+        $articlesTab = new Tab('ArticlesTab', _t('Collectors.ARTICLES', 'Articles'));
+        $fields->insertAfter('Main', $articlesTab);
+        $fields->addFieldToTab('Root.ArticlesTab', $this->createGridField('CollectableArticles', _t('Collectors.ARTICLES', 'Articles'), $subLists['Articles'], 'CollectableArticle'));
+
+        $photosTab = new Tab('PhotosTab', _t('Collectors.PHOTOS', 'Photos'));
+        $fields->insertAfter('Main', $photosTab);
+        $fields->addFieldToTab('Root.PhotosTab', $this->createGridField('CollectablePhotos', _t('Collectors.PHOTOS', 'Photos'), $subLists['Photos'], 'CollectablePhoto'));
+
+        $artworksTab = new Tab('ArtworksTab', _t('Collectors.ARTWORKS', 'Artworks'));
+        $fields->insertAfter('Main', $artworksTab);
+        $fields->addFieldToTab('Root.ArtworksTab', $this->createGridField('CollectableArtworks', _t('Collectors.ARTWORKS', 'Artworks'), $subLists['Artworks'], 'CollectableArtwork'));
+    }
+
+    private function createGridField($name, $title, $dataList, $className) {
+        $field = new GridField($name, $title, $dataList);
+        $field->setModelClass($className);
+
+        $cc = $field->getConfig();
+        $cc->addComponent(new GridFieldButtonRow('before'));
+        $cc->removeComponentsByType('GridFieldAddNewButton');
+        $cc->addComponent(new GridFieldAddNewButton());
+        $cc->addComponent(new GridFieldAddExistingAutocompleter('buttons-before-right', array('SerialNumber', 'Title', 'Summary', 'Description')));
+        $cc->addComponent(new GridFieldDetailForm());
+
+        return $field;
     }
 
     public function extraTabs(&$lists) {
-        $collectables = $this->owner->Collectables();
-        $documents = $collectables->filter('ClassName', 'CollectableDocument');
-        $articles = $collectables->filter('ClassName', 'CollectableArticle');
-        $photos = $collectables->filter('ClassName', 'CollectablePhoto');
-        $artworks = $collectables->filter('ClassName', 'CollectableArtwork');
+        $subLists = $this->getCollectableLists();
 
-        $this->insertExtraTab($lists, $documents, _t('Collectors.DOCUMENTS', 'Documents'));
-        $this->insertExtraTab($lists, $articles, _t('Collectors.ARTICLES', 'Articles'));
-        $this->insertExtraTab($lists, $photos, _t('Collectors.PHOTOS', 'Photos'));
-        $this->insertExtraTab($lists, $artworks, _t('Collectors.ARTWORKS', 'Artworks'));
-//        $this->insertExtraTab($lists, $collectables, _t('Collectors.COLLECTABLES', 'Collectables'));
+        $this->insertExtraTab($lists, $subLists['Documents'], _t('Collectors.DOCUMENTS', 'Documents'));
+        $this->insertExtraTab($lists, $subLists['Articles'], _t('Collectors.ARTICLES', 'Articles'));
+        $this->insertExtraTab($lists, $subLists['Photos'], _t('Collectors.PHOTOS', 'Photos'));
+        $this->insertExtraTab($lists, $subLists['Artworks'], _t('Collectors.ARTWORKS', 'Artworks'));
     }
 
     private function insertExtraTab(&$lists, $list, $title) {
@@ -65,6 +95,17 @@ class CollectableExtension
                         ->renderWith('List_Grid')
             );
         }
+    }
+
+    private function getCollectableLists() {
+        $collectables = $this->owner->Collectables();
+
+        return array(
+            'Documents' => $collectables->filter('ClassName', 'CollectableDocument'),
+            'Articles' => $collectables->filter('ClassName', 'CollectableArticle'),
+            'Photos' => $collectables->filter('ClassName', 'CollectablePhoto'),
+            'Artworks' => $collectables->filter('ClassName', 'CollectableArtwork'),
+        );
     }
 
 }

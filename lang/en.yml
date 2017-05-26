@@ -66,6 +66,7 @@ en:
     COLLECTABLE: 'Collectable'
     OTHER_IMAGES: 'Other Images'
     PEOPLE: 'People'
+    TOWNS: 'Towns'
 
     # Extension
     COLLECTABLES: 'Collectables'    

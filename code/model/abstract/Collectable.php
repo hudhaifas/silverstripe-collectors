@@ -103,6 +103,7 @@ class Collectable
 
         $labels['Collections'] = _t('Collectors.COLLECTIONS', 'Collections');
         $labels['People'] = _t('Collectors.PEOPLE', 'People');
+        $labels['Towns'] = _t('Collectors.TOWNS', 'Towns');
 
         // Settings
         $labels['CanViewType'] = _t('Collectors.CAN_VIEW_TYPE', 'Who can view this person');
@@ -174,7 +175,7 @@ class Collectable
 
         // Prepare Settings tab
         $settingsTab = new Tab('SettingsTab', _t('Collectors.SETTINGS', 'Settings'));
-        $fields->insertAfter('Main', $settingsTab);
+        $fields->insertAfter('OtherImages', $settingsTab);
 
         $this->reorderField($fields, 'CanViewType', 'Root.Main', 'Root.SettingsTab');
 
@@ -389,7 +390,8 @@ class Collectable
                 })
                 ->sort('RAND()');
 
-        return $list;
+//        return $list->count() ? $list : null;
+        return $list->count() ? $list : null;
     }
 
     public function getObjectSummary() {

@@ -65,6 +65,7 @@ ar:
     COLLECTABLE: 'المجمع'
     OTHER_IMAGES: 'صور أخرى'
     PEOPLE: 'الشخوص'
+    TOWNS: 'المدن'
 
     # Extension
     COLLECTABLES: 'المقتنيات'    

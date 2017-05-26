@@ -390,7 +390,6 @@ class Collectable
                 })
                 ->sort('RAND()');
 
-//        return $list->count() ? $list : null;
         return $list->count() ? $list : null;
     }
 

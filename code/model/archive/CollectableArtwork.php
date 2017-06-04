@@ -145,7 +145,9 @@ class CollectableArtwork
     }
 
     public function getObjectTabs() {
-        $lists = array();
+        $tabs = parent::getObjectTabs();
+
+        $lists = $tabs->toArray();
         if ($this->Texts) {
             $lists[] = array(
                 'Title' => _t('Collectors.TEXTS', 'Texts'),

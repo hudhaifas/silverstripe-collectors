@@ -39,7 +39,7 @@ class Collectable
         'Summary' => 'Varchar(255)',
         'Description' => 'Text',
         'Collector' => 'Varchar(255)',
-        'Explanations' => 'Text',
+        'Explanations' => 'HTMLText',
         // Permession Level
         "CanViewType" => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')",
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",

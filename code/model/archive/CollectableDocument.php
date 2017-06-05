@@ -103,13 +103,8 @@ class CollectableDocument
     }
 
     public function getObjectSummary() {
-        $lists = array();
-
-        if ($this->Subtitle()) {
-            $lists[] = array(
-                'Value' => $this->Subtitle()
-            );
-        }
+        $tabs = parent::getObjectSummary();
+        $lists = $tabs->toArray();
 
         if ($this->Date) {
             $lists[] = array(

@@ -107,18 +107,20 @@ class CollectableArtwork
     }
 
     public function getObjectSummary() {
-        $lists = array();
-
-        if ($this->Subtitle()) {
-            $lists[] = array(
-                'Value' => $this->Subtitle()
-            );
-        }
+        $tabs = parent::getObjectSummary();
+        $lists = $tabs->toArray();
 
         if ($this->Date) {
             $lists[] = array(
                 'Title' => _t('Collectors.DATE', 'Date'),
                 'Value' => $this->Date
+            );
+        }
+
+        if ($this->Artist) {
+            $lists[] = array(
+                'Title' => _t('Collectors.ARTIST', 'Artist'),
+                'Value' => $this->Artist
             );
         }
 

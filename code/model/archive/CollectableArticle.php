@@ -102,13 +102,8 @@ class CollectableArticle
     }
 
     public function getObjectSummary() {
-        $lists = array();
-
-        if ($this->Subtitle()) {
-            $lists[] = array(
-                'Value' => $this->Subtitle()
-            );
-        }
+        $tabs = parent::getObjectSummary();
+        $lists = $tabs->toArray();
 
         if ($this->Author) {
             $lists[] = array(
@@ -121,13 +116,6 @@ class CollectableArticle
             $lists[] = array(
                 'Title' => _t('Collectors.DATE', 'Date'),
                 'Value' => $this->Date
-            );
-        }
-
-        if ($this->Collector) {
-            $lists[] = array(
-                'Title' => _t('Collectors.COLLECTOR', 'Collector'),
-                'Value' => $this->Collector
             );
         }
 

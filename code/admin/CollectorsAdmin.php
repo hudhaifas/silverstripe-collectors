@@ -36,9 +36,6 @@ class CollectorsAdmin
         'CollectableBanknote',
         'CollectableCoin',
         'CollectableStamp',
-        'CollectableDocument',
-        'CollectableArtwork',
-        'CollectableCollection',
     );
     private static $url_segment = 'collectors';
     private static $menu_title = "Collectors";

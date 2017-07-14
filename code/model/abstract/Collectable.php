@@ -31,7 +31,7 @@
  */
 class Collectable
         extends DataObject
-        implements SingleDataObject {
+        implements ManageableDataObject {
 
     private static $db = array(
         'SerialNumber' => 'Varchar(20)', // Unique serial number
@@ -45,13 +45,12 @@ class Collectable
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",
     );
     private static $has_one = array(
-        'FrontImage' => 'Image',
+        'Image' => 'Image',
     );
     private static $has_many = array(
         'OtherImages' => 'CollectableImage',
     );
     private static $many_many = array(
-        'Collections' => 'CollectableCollection',
         "ViewerGroups" => "Group",
         "EditorGroups" => "Group",
         "ViewerMembers" => "Member",
@@ -74,13 +73,9 @@ class Collectable
             'field' => 'TextField',
             'filter' => 'PartialMatchFilter',
         ),
-        'Collector' => array(
-            'field' => 'TextField',
-            'filter' => 'PartialMatchFilter',
-        ),
     );
     private static $summary_fields = array(
-        'FrontImage.StripThumbnail',
+        'Image.StripThumbnail',
         'Title',
         'Summary',
         'Description',
@@ -90,8 +85,8 @@ class Collectable
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['FrontImage'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
-        $labels['FrontImage.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+        $labels['Image'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+        $labels['Image.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
         $labels['OtherImages'] = _t('Collectors.OTHER_IMAGES', 'Other Images');
 
         $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
@@ -118,12 +113,12 @@ class Collectable
         $detailsTab = new Tab('Details', _t('Collectors.DETAILS', 'Details'));
         $fields->insertAfter('Main', $detailsTab);
 
-        if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+        if ($field = $fields->fieldByName('Root.Main.Image')) {
             $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
             $field->setFolderName("collectors");
         }
 
-        $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Main');
@@ -133,21 +128,12 @@ class Collectable
         $this->reorderField($fields, 'Explanations', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Details');
 
-        $fields->removeFieldFromTab('Root', 'Collections');
-        $collectionsField = TagField::create(
-                        'Collections', //
-                        _t('Collectors.COLLECTIONS', 'Collections'), // 
-                        CollectableCollection::get(), //
-                        $this->Collections()
-        );
-        $fields->addFieldToTab('Root.Details', $collectionsField);
-
-        $this->getSettingsFields($fields);
+        $this->getPrivacyFields($fields);
 
         return $fields;
     }
 
-    public function getSettingsFields(&$fields) {
+    public function getPrivacyFields(&$fields) {
         // Prepare groups and members lists
         $groupsMap = array();
         foreach (Group::get() as $group) {
@@ -163,48 +149,59 @@ class Collectable
         }
         asort($membersMap);
 
+        // Prepare Options
+        $viewersOptionsSource = array(
+            "Anyone" => _t('Archives.ACCESSANYONE', "Anyone"),
+            "LoggedInUsers" => _t('Archives.ACCESSLOGGEDIN', "All Logged-in users"),
+            "OnlyTheseUsers" => _t('Archives.ACCESSONLYTHESE', "Only these people (choose from list)")
+        );
+
+        $editorsOptionsSource = array(
+            "LoggedInUsers" => _t('Archives.ACCESSLOGGEDIN', "All Logged-in users"),
+            "OnlyTheseUsers" => _t('Archives.ACCESSONLYTHESE', "Only these people (choose from list)")
+        );
+
         // Remove existing fields
+        $fields->removeFieldFromTab('Root.Main', 'CanViewType');
         $fields->removeFieldFromTab('Root.ViewerGroups', 'ViewerGroups');
         $fields->removeFieldFromTab('Root', 'ViewerGroups');
         $fields->removeFieldFromTab('Root.ViewerMembers', 'ViewerMembers');
         $fields->removeFieldFromTab('Root', 'ViewerMembers');
+
+        $fields->removeFieldFromTab('Root.Main', 'CanViewType');
         $fields->removeFieldFromTab('Root.EditorGroups', 'EditorGroups');
         $fields->removeFieldFromTab('Root', 'EditorGroups');
         $fields->removeFieldFromTab('Root.EditorMembers', 'EditorMembers');
         $fields->removeFieldFromTab('Root', 'EditorMembers');
 
-        // Prepare Settings tab
-        $settingsTab = new Tab('SettingsTab', _t('Collectors.SETTINGS', 'Settings'));
-        $fields->insertAfter('OtherImages', $settingsTab);
+        // Prepare Privacy tab
+        $privacyTab = new Tab('PrivacyTab', _t('Archives.PRIVACY', 'Privacy'));
+        $fields->insertAfter('OtherImages', $privacyTab);
 
-        $this->reorderField($fields, 'CanViewType', 'Root.Main', 'Root.SettingsTab');
-
-        $viewerGroupsField = ListboxField::create("ViewerGroups", _t('Collectors.VIEWER_GROUPS', "Viewer Groups"))
-                ->setMultiple(true)
-                ->setSource($groupsMap)
-                ->setAttribute('data-placeholder', _t('Collectors.GROUP_PLACEHOLDER', 'Click to select group'));
-        $fields->addFieldToTab('Root.SettingsTab', $viewerGroupsField);
-
-        $viewerMembersField = ListboxField::create("ViewerMembers", _t('Collectors.VIEWER_MEMBERS', "Viewer Users"))
-                ->setMultiple(true)
-                ->setSource($membersMap)
-                ->setAttribute('data-placeholder', _t('Collectors.MEMBER_PLACEHOLDER', 'Click to select user'));
-        $fields->addFieldToTab('Root.SettingsTab', $viewerMembersField);
-
-
-        $this->reorderField($fields, 'CanEditType', 'Root.Main', 'Root.SettingsTab');
-
-        $editorGroupsField = ListboxField::create("EditorGroups", _t('Collectors.EDITOR_GROUPS', "Editor Groups"))
-                ->setMultiple(true)
-                ->setSource($groupsMap)
-                ->setAttribute('data-placeholder', _t('Collectors.GROUP_PLACEHOLDER', 'Click to select group'));
-        $fields->addFieldToTab('Root.SettingsTab', $editorGroupsField);
-
-        $editorMembersField = ListboxField::create("EditorMembers", _t('Collectors.EDITOR_MEMBERS', "Editor Users"))
-                ->setMultiple(true)
-                ->setSource($membersMap)
-                ->setAttribute('data-placeholder', _t('Collectors.MEMBER_PLACEHOLDER', 'Click to select user'));
-        $fields->addFieldToTab('Root.SettingsTab', $editorMembersField);
+        $fields->addFieldsToTab('Root.PrivacyTab', array(
+            OptionsetField::create(
+                    "CanViewType", _t('Archives.CAN_VIEW_TYPE', 'Who can view this person?')
+            )->setSource($viewersOptionsSource), //
+            ListboxField::create("ViewerGroups", _t('Archives.VIEWER_GROUPS', "Viewer Groups"))
+                    ->setMultiple(true)
+                    ->setSource($groupsMap)
+                    ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
+            ListboxField::create("ViewerMembers", _t('Archives.VIEWER_MEMBERS', "Viewer Users"))
+                    ->setMultiple(true)
+                    ->setSource($membersMap)
+                    ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user')), //
+            OptionsetField::create(
+                    "CanEditType", _t('Archives.CAN_EDIT_TYPE', 'Who can edit this person?')
+            )->setSource($editorsOptionsSource), //
+            ListboxField::create("EditorGroups", _t('Archives.EDITOR_GROUPS', "Editor Groups"))
+                    ->setMultiple(true)
+                    ->setSource($groupsMap)
+                    ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
+            ListboxField::create("EditorMembers", _t('Archives.EDITOR_MEMBERS', "Editor Users"))
+                    ->setMultiple(true)
+                    ->setSource($membersMap)
+                    ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
+        ));
     }
 
     function Link($action = null) {
@@ -233,6 +230,32 @@ class Collectable
 
     /// Permissions ///
     public function canCreate($member = false) {
+        if (!$this->isCreatable()) {
+            return false;
+        }
+
+        if (!$member) {
+            $member = Member::currentUserID();
+        }
+
+        if ($member && is_numeric($member)) {
+            $member = DataObject::get_by_id('Member', $member);
+        }
+
+        $cachedPermission = self::cache_permission_check('create', $member, $this->ID);
+        if (isset($cachedPermission)) {
+            return $cachedPermission;
+        }
+
+        if ($member && Permission::checkMember($member, "ADMIN")) {
+            return true;
+        }
+
+        $extended = $this->extendedCan('canCreateCollectables', $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
         return false;
     }
 
@@ -342,6 +365,10 @@ class Collectable
         return self::cache_permission_check('edit', $member, $this->ID, false);
     }
 
+    public function isCreatable() {
+        return false;
+    }
+
     public static function cache_permission_check($typeField, $member, $personID, $result = null) {
         if (!$member) {
             $member = Member::currentUserID();
@@ -368,8 +395,12 @@ class Collectable
     }
 
     /// Single Data Object ///
+    public function getObjectItem() {
+        return $this->renderWith('Collectable_Item');
+    }
+
     public function getObjectImage() {
-        return $this->FrontImage();
+        return $this->Image();
     }
 
     public function getObjectDefaultImage() {

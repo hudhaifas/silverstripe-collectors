@@ -36,7 +36,7 @@ class CollectableCurrency
         'BackImage' => 'Image',
     );
     private static $summary_fields = array(
-        'FrontImage.StripThumbnail',
+        'Image.StripThumbnail',
         'BackImage.StripThumbnail',
         'Title',
         'Summary',
@@ -60,7 +60,7 @@ class CollectableCurrency
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+        if ($field = $fields->fieldByName('Root.Main.Image')) {
             $field->setFolderName("collectors/currency");
         }
 
@@ -69,7 +69,7 @@ class CollectableCurrency
             $field->setFolderName("collectors/currency");
         }
 
-        $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'BackImage', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Details');

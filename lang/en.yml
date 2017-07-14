@@ -7,10 +7,6 @@ en:
     SINGULARNAME: 'Collectables'
   CollectableCurrency:
     SINGULARNAME: 'Currencies'
-  CollectableDocument:
-    SINGULARNAME: 'Documents'
-  CollectableArtwork:
-    SINGULARNAME: 'Artworks'
   CurrencySet:
     SINGULARNAME: 'Currency Sets'
   CollectableBanknote:
@@ -21,12 +17,6 @@ en:
     SINGULARNAME: 'Stamp Sets'
   CollectableStamp:
     SINGULARNAME: 'Stamps'
-  CollectableCollection:
-    SINGULARNAME: 'Collections'
-  CollectableArticle:
-    SINGULARNAME: 'Articles'
-  CollectablePhoto:
-    SINGULARNAME: 'Photos'
   CollectableImage:
     SINGULARNAME: 'Other Images'
   Collectors:

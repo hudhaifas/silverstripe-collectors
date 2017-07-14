@@ -33,7 +33,7 @@ class CollectablesPage
         extends DataObjectPage {
 
     private static $db = array(
-        'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp, CollectableArtwork, CollectableArticle, CollectableDocument, CollectablePhoto', 'Collectable')",
+        'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp', 'Collectable')",
     );
 
     /**
@@ -114,16 +114,11 @@ class CollectablesPage_Controller
     }
 
     protected function getFiltersList() {
-//        $lists = array(
-//            array(
-//                'Title' => 'Categories',
-//                'Items' => $this->getObjectsList()->Limit(6)
-//            )
-//        );
-//
-//        return new ArrayList($lists);
-//        
         return null;
+    }
+
+    protected function getPageLength() {
+        return 24;
     }
 
 }

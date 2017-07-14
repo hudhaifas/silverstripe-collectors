@@ -7,10 +7,6 @@ ar:
     SINGULARNAME: 'مجمع'
   CollectableCurrency:
     SINGULARNAME: 'العملات'
-  CollectableDocument:
-    SINGULARNAME: 'الوثائق'
-  CollectableArtwork:
-    SINGULARNAME: 'الأعمال الفنية'
   CurrencySet:
     SINGULARNAME: 'إصدارات نقدية'
   CollectableBanknote:
@@ -21,12 +17,6 @@ ar:
     SINGULARNAME: 'إصدارات بريدية'
   CollectableStamp:
     SINGULARNAME: 'الطوابع'
-  CollectableCollection:
-    SINGULARNAME: 'المجموعات'
-  CollectableArticle:
-    SINGULARNAME: 'المقالات'
-  CollectablePhoto:
-    SINGULARNAME: 'الصور'
   CollectableImage:
     SINGULARNAME: 'صور أخرى'
   Collectors:

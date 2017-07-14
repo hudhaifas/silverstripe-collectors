@@ -36,7 +36,7 @@ class CollectableStamp
         'Condition' => "Enum('USED, UNUSED', 'UNUSED')",
     );
     private static $summary_fields = array(
-        'FrontImage.StripThumbnail',
+        'Image.StripThumbnail',
         'Title',
         'Summary',
         'Description',
@@ -59,12 +59,12 @@ class CollectableStamp
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        if ($field = $fields->fieldByName('Root.Main.FrontImage')) {
+        if ($field = $fields->fieldByName('Root.Main.Image')) {
             $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
             $field->setFolderName("collectors/stamps");
         }
 
-        $this->reorderField($fields, 'FrontImage', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Image', 'Root.Main', 'Root.Main');
 
         $this->reorderField($fields, 'Title', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Summary', 'Root.Main', 'Root.Details');

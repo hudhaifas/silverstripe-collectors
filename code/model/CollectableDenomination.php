@@ -145,10 +145,8 @@ class CollectableDenomination
             $title = $this->Title;
         }
 
-        if ($this->Date) {
-            $title .= ' (' . $this->Date . ')';
-        } else if ($this->Year) {
-            $title .= ' (' . $this->Year . ')';
+        if ($this->Year) {
+            $title .= ' (' . $this->TheDate() . ')';
         }
 
         return $title;
@@ -160,10 +158,8 @@ class CollectableDenomination
             $subtitle = $this->Title;
         }
 
-        if ($this->Date) {
-            $subtitle .= ' (' . $this->Date . ')';
-        } else if ($this->Year) {
-            $subtitle .= ' (' . $this->Year . ')';
+        if ($this->Year) {
+            $subtitle .= ' (' . $this->TheDate() . ')';
         }
 
         return $subtitle;

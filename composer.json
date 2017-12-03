@@ -18,7 +18,7 @@
         "silverstripe/cms": "~3.0",
         "silverstripe/framework": "~3.0",
         "silverstripe/tagfield": "^1.0",
-        "hudhaifas/silverstripe-dataobject-manager": "~1.0"
+        "hudhaifas/silverstripe-dataobject-manager": "dev-master"
     },
     "extra": {
         "installer-name": "collectors"

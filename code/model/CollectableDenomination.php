@@ -173,4 +173,15 @@ class CollectableDenomination
         return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
     }
 
+    //////// SearchableDataObject //////// 
+    public function getObjectRichSnippets() {
+        $schema = array();
+
+        $schema['@type'] = "CreativeWork";
+        $schema['dateCreated'] = $this->TheDate();
+        $schema['description'] = $this->Summary;
+
+        return $schema;
+    }
+
 }

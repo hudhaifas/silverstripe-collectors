@@ -1,18 +1,23 @@
-<div>
-    <a <% if ObjectLink %>href="$ObjectLink"<% end_if %> title="$ObjectTitle">
-        <div class="thumbnail text-center col-sm-12 col-xs-4 dataobject-image">
+<div style="height: auto;">
+    <a <% if not $isObjectDisabled %>href="$ObjectLink"<% end_if %> title="$ObjectTitle">
+        <div class="thumbnail text-center col-sm-12 dataobject-image">
             <% include List_Image %>
 
-            <% if ObjectLink %>
-                <div class="mask">
-                    <div class="info"><%t DataObjectPage.MORE_ABOUT 'More' %></div>
-                </div>
+            <% if not $isObjectDisabled %>
+                <div class="mask"></div>
             <% end_if %>
         </div>
 
-
-        <div class="content col-sm-12 col-xs-8 dataobject-summary">
-            <% include Single_Summary %>
+        <div class="content col-sm-12 ellipsis">
+            <p class="title">
+                <a <% if not $isObjectDisabled %>href="$ObjectLink"<% end_if %> title="$ObjectTitle">$Title</a>
+            </p>
         </div>		
     </a>
+
+    <% if $Year %>
+        <div class="object-label object-label-blue object-label-top-right">
+            $Year
+</div>
+    <% end_if %>
 </div>

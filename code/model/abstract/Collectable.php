@@ -31,7 +31,7 @@
  */
 class Collectable
         extends DataObject
-        implements ManageableDataObject {
+        implements ManageableDataObject, SearchableDataObject {
 
     private static $db = array(
         'SerialNumber' => 'Varchar(20)', // Unique serial number
@@ -211,8 +211,7 @@ class Collectable
                 ))
                 ->first();
 
-        return $page ? $page->Link("show/$this->ID") : null;
-//        return Director::get_current_page()->Link("show/$this->ID");
+        return $page ? $page->Link($action) : null;
     }
 
     public function Subtitle() {
@@ -394,7 +393,7 @@ class Collectable
         return self::$cache_permissions[$cacheKey];
     }
 
-    /// Single Data Object ///
+    //////// ManageableDataObject //////// 
     public function getObjectItem() {
         return $this->renderWith('Collectable_Item');
     }
@@ -404,11 +403,15 @@ class Collectable
     }
 
     public function getObjectDefaultImage() {
-        return null;
+        return "collectors/images/default-stamp.png";
     }
 
     public function getObjectLink() {
-        return $this->Link();
+        return $this->Link("show/$this->ID");
+    }
+
+    public function getObjectEditLink() {
+        return $this->Link("edit/$this->ID");
     }
 
     public function getObjectRelated() {
@@ -440,6 +443,10 @@ class Collectable
         }
 
         return new ArrayList($lists);
+    }
+
+    public function getObjectNav() {
+        
     }
 
     public function getObjectTabs() {
@@ -476,6 +483,17 @@ class Collectable
         }
 
         return $title;
+    }
+
+    //////// SearchableDataObject //////// 
+    public function getObjectRichSnippets() {
+        $schema = array();
+
+        $schema['@type'] = "Thing";
+        $schema['image'] = $this->Image()->URL;
+        $schema['name'] = $this->Title;
+
+        return $schema;
     }
 
     /// Utils ///

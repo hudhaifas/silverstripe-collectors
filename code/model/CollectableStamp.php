@@ -71,7 +71,7 @@ class CollectableStamp
         $this->reorderField($fields, 'Description', 'Root.Main', 'Root.Details');
         $this->reorderField($fields, 'Collector', 'Root.Main', 'Root.Main');
 
-        $self->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
+        $this->reorderField($fields, 'Condition', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Country', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Year', 'Root.Main', 'Root.Main');
         $this->reorderField($fields, 'Calendar', 'Root.Main', 'Root.Main');
@@ -106,10 +106,6 @@ class CollectableStamp
         );
 
         return new ArrayList($lists);
-    }
-
-    public function getObjectDefaultImage() {
-        return "genealogist/images/default-stamp.png";
     }
 
 }

@@ -347,6 +347,11 @@ class Collectable
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }
 
+        $collectorsGroup = DataObject::get_one('Group', "Code = 'collectors'");
+        if ($member->inGroup($collectorsGroup)) {
+            return true;
+        }
+
         if ($member && $this->hasMethod('CreatedBy') && $member == $this->CreatedBy()) {
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }

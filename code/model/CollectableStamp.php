@@ -112,4 +112,8 @@ class CollectableStamp
         return new ArrayList($lists);
     }
 
+    public function isCreatable() {
+        return true;
+    }
+
 }

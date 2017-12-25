@@ -250,6 +250,11 @@ class Collectable
             return true;
         }
 
+        $collectorsGroup = DataObject::get_one('Group', "Code = 'collectors'");
+        if ($member->inGroup($collectorsGroup)) {
+            return true;
+        }
+
         $extended = $this->extendedCan('canCreateCollectables', $member);
         if ($extended !== null) {
             return $extended;

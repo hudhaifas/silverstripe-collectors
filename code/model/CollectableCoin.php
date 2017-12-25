@@ -31,5 +31,9 @@
  */
 class CollectableCoin
         extends CollectableCurrency {
-    //put your code here
+
+    public function isCreatable() {
+        return true;
+    }
+
 }

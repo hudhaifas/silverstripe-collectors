@@ -90,26 +90,15 @@ class CollectableStamp
     }
 
     public function getObjectSummary() {
-        $lists = array();
+        $lists = parent::getObjectSummary();
 
-        if ($this->Subtitle()) {
-            $lists[] = array(
-                'Value' => $this->Subtitle()
-            );
-        }
-
-        if ($this->Summary) {
-            $lists[] = array(
-                'Value' => $this->Summary
-            );
-        }
-
-        $lists[] = array(
+        $item = array(
             'Title' => _t('Collectors.CONDITION', 'Condition'),
             'Value' => $this->TheCondition()
         );
+        $lists->add($item);
 
-        return new ArrayList($lists);
+        return $lists;
     }
 
     public function isCreatable() {

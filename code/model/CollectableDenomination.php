@@ -126,6 +126,52 @@ class CollectableDenomination
         return $title;
     }
 
+    public function getObjectSummary() {
+        $lists = parent::getObjectSummary();
+
+        if ($this->Country) {
+            $item = array(
+                'Title' => _t('Collectors.COUNTRY', 'Country'),
+                'Value' => $this->Country
+            );
+            $lists->add($item);
+        }
+
+        if ($this->Description) {
+            $item = array(
+                'Title' => _t('Collectors.DESCRIPTION', 'Description'),
+                'Value' => $this->Description
+            );
+            $lists->add($item);
+        }
+
+        if ($this->Denomination && $this->Currency) {
+            $item = array(
+                'Title' => _t('Collectors.VALUE', 'Value'),
+                'Value' => $this->Denomination . ' ' . $this->Currency
+            );
+            $lists->add($item);
+        }
+
+        if ($this->Year) {
+            $item = array(
+                'Title' => _t('Collectors.DATE', 'Date'),
+                'Value' => $this->TheDate()
+            );
+            $lists->add($item);
+        }
+
+        if ($this->Quantity) {
+            $item = array(
+                'Title' => _t('Collectors.QUANTITY', 'Quantity'),
+                'Value' => $this->Quantity
+            );
+            $lists->add($item);
+        }
+
+        return $lists;
+    }
+
     public function Subtitle() {
         $subtitle = '';
         if ($this->Title) {

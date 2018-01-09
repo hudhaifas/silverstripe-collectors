@@ -495,6 +495,10 @@ class Collectable
         return $title;
     }
 
+    public function canPublicView() {
+        return $this->canView();
+    }
+
     //////// SearchableDataObject //////// 
     public function getObjectRichSnippets() {
         $schema = array();

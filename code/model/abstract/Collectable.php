@@ -348,7 +348,7 @@ class Collectable
         }
 
         $collectorsGroup = DataObject::get_one('Group', "Code = 'collectors'");
-        if ($member->inGroup($collectorsGroup)) {
+        if ($member && $member->inGroup($collectorsGroup)) {
             return true;
         }
 

@@ -36,6 +36,7 @@ en:
     DATE: 'Date'
     CALENDAR: 'Calendar'
     QUANTITY: 'Quantity'
+    VALUE: 'Value'
     CURRENCY: 'Currency'
     DENOMINATION: 'Denomination'
     COLLECTIONS: 'Collections'

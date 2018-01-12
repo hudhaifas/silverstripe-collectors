@@ -36,6 +36,7 @@ ar:
     DATE: 'التاريخ'
     CALENDAR: 'التقويم'
     QUANTITY: 'الكمية'
+    VALUE: 'القيمة'
     CURRENCY: 'العملة'
     DENOMINATION: 'الفئة'
     COLLECTIONS: 'المجموعات'

@@ -153,7 +153,7 @@ class CollectableDenomination
             $lists->add($item);
         }
 
-        if ($this->Year) {
+        if ($this->TheDate()) {
             $item = array(
                 'Title' => _t('Collectors.DATE', 'Date'),
                 'Value' => $this->TheDate()

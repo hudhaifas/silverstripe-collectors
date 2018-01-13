@@ -31,7 +31,7 @@
  */
 class Collectable
         extends DataObject
-        implements ManageableDataObject, SearchableDataObject {
+        implements ManageableDataObject, SearchableDataObject, SociableDataObject {
 
     private static $db = array(
         'SerialNumber' => 'Varchar(20)', // Unique serial number
@@ -515,6 +515,19 @@ class Collectable
         $schema['name'] = $this->Title;
 
         return $schema;
+    }
+
+    //////// SociableDataObject //////// 
+    public function getSocialDescription() {
+        if ($this->Summary) {
+            return $this->Summary;
+        } elseif ($this->Description) {
+            return strip_tags($this->Description);
+        } elseif ($this->Explanations) {
+            return strip_tags($this->Explanations);
+        }
+
+        return $this->getObjectTitle();
     }
 
     /// Utils ///

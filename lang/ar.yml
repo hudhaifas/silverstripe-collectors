@@ -55,6 +55,7 @@ ar:
     AUTHOR: 'الكاتب'
     COLLECTABLE: 'المجمع'
     OTHER_IMAGES: 'صور أخرى'
+    OTHER_SIDE: 'الوجه الآخر'
     PEOPLE: 'الشخوص'
     TOWNS: 'المدن'
 

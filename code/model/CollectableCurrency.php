@@ -89,4 +89,23 @@ class CollectableCurrency
         return $fields;
     }
 
+    public function getObjectDefaultImage() {
+        return "collectors/images/default-coin.png";
+    }
+
+    public function getObjectTabs() {
+        $lists = parent::getObjectTabs();
+
+        if ($this->BackImage()->exists()) {
+            $item = array(
+                'Title' => _t('Collectors.OTHER_SIDE', 'Other Side'),
+                'Content' => $this
+                        ->renderWith('Tab_BackImages')
+            );
+            $lists->add($item);
+        }
+
+        return $lists;
+    }
+
 }

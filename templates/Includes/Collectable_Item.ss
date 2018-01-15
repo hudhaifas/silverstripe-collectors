@@ -17,7 +17,7 @@
 
     <% if $Year %>
         <div class="object-label object-label-blue object-label-top-right">
-            $Year
-</div>
+            $TheDate
+        </div>
     <% end_if %>
 </div>

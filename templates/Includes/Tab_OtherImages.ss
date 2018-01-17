@@ -1,12 +1,15 @@
-<% loop OtherImages %>
-<div class="row">
-    <div class="col-md-3">
-        <img src="$Image.PaddedImage(300,300).Watermark.URL" data-origin="$Image.Watermark.URL" class="img-responsive" />
+<div class="dataobject-gallery row">
+    <% loop OtherImages %>
+    <div class="col-md-3 col-xs-6">
+        <div class="thumbnail text-center">
+            <a href="$Image.Watermark.URL" data-lightbox="dataobject-gallery" data-title="{$Title} <p>{$Content}</p>">
+                <img src="$Image.SetHeight(300).SetWidth(300).Watermark.URL" alt="{$Title}" class="img-responsive" />
+                <div class="caption">
+                    <h4>$Title</h4>
+                    <p>$Description.LimitCharacters(110)</p>
+                </div>
+            </a>
+        </div>
     </div>
-
-    <div class="col-md-9">
-        <strong>$Title</strong>
-        <p>$Description</p>
-    </div>
+    <% end_loop %>
 </div>
-<% end_loop %>

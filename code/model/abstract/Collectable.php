@@ -41,7 +41,7 @@ class Collectable
         'Collector' => 'Varchar(255)',
         'Explanations' => 'HTMLText',
         // Permession Level
-        "CanViewType" => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')",
+        "CanViewType" => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'Anyone')",
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",
     );
     private static $has_one = array(
@@ -57,7 +57,7 @@ class Collectable
         "EditorMembers" => "Member",
     );
     private static $defaults = array(
-        "CanViewType" => "LoggedInUsers",
+        "CanViewType" => "Anyone",
         "CanEditType" => "OnlyTheseUsers"
     );
     private static $searchable_fields = array(

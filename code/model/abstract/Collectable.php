@@ -419,6 +419,10 @@ class Collectable
         return $this->Image();
     }
 
+    public function getObjectEditableImageName() {
+        
+    }
+
     public function getObjectDefaultImage() {
         return "collectors/images/default-stamp.png";
     }

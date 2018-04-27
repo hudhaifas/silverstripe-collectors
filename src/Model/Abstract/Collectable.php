@@ -37,7 +37,7 @@ class Collectable
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",
     ];
     private static $has_one = [
-        'Image' => Image::class,
+        ':ExactMatch:not' => Image::class,
     ];
     private static $has_many = [
         'OtherImages' => CollectableImage::class,
@@ -245,7 +245,7 @@ class Collectable
             return true;
         }
 
-        $collectorsGroup = DataObject::get_one('Group', "Code = 'collectors'");
+        $collectorsGroup = DataObject::get_one(Group::class, "Code = 'collectors'");
         if ($member->inGroup($collectorsGroup)) {
             return true;
         }
@@ -342,7 +342,7 @@ class Collectable
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }
 
-        $collectorsGroup = DataObject::get_one('Group', "Code = 'collectors'");
+        $collectorsGroup = DataObject::get_one(Group::class, "Code = 'collectors'");
         if ($member && $member->inGroup($collectorsGroup)) {
             return true;
         }
@@ -408,7 +408,7 @@ class Collectable
     }
 
     public function getObjectEditableImageName() {
-        
+        return 'Image';
     }
 
     public function getObjectDefaultImage() {
@@ -426,7 +426,7 @@ class Collectable
     public function getObjectRelated() {
         $list = $this->get()
                 ->filter([
-                    'ID:Negation' => $this->ID
+                    'ID:ExactMatch:not' => $this->ID
                 ])
                 ->filterByCallback(function($record) {
                     return $record->canView();

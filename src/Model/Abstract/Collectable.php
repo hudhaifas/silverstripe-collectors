@@ -175,22 +175,18 @@ class Collectable
                     "CanViewType", _t('Archives.CAN_VIEW_TYPE', 'Who can view this person?')
             )->setSource($viewersOptionsSource), //
             ListboxField::create("ViewerGroups", _t('Archives.VIEWER_GROUPS', "Viewer Groups"))
-                    ->setMultiple(true)
                     ->setSource($groupsMap)
                     ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
             ListboxField::create("ViewerMembers", _t('Archives.VIEWER_MEMBERS', "Viewer Users"))
-                    ->setMultiple(true)
                     ->setSource($membersMap)
                     ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user')), //
             OptionsetField::create(
                     "CanEditType", _t('Archives.CAN_EDIT_TYPE', 'Who can edit this person?')
             )->setSource($editorsOptionsSource), //
             ListboxField::create("EditorGroups", _t('Archives.EDITOR_GROUPS', "Editor Groups"))
-                    ->setMultiple(true)
                     ->setSource($groupsMap)
                     ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
             ListboxField::create("EditorMembers", _t('Archives.EDITOR_MEMBERS', "Editor Users"))
-                    ->setMultiple(true)
                     ->setSource($membersMap)
                     ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
         ]);
@@ -237,7 +233,7 @@ class Collectable
         }
 
         if ($member && is_numeric($member)) {
-            $member = DataObject::get_by_id('Member', $member);
+            $member = DataObject::get_by_id(Member::class, $member);
         }
 
         $cachedPermission = self::cache_permission_check('create', $member, $this->ID);
@@ -268,7 +264,7 @@ class Collectable
         }
 
         if ($member && is_numeric($member)) {
-            $member = DataObject::get_by_id('Member', $member);
+            $member = DataObject::get_by_id(Member::class, $member);
         }
 
         $cachedPermission = self::cache_permission_check('view', $member, $this->ID);
@@ -308,7 +304,7 @@ class Collectable
         }
 
         if ($member && is_numeric($member)) {
-            $member = DataObject::get_by_id('Member', $member);
+            $member = DataObject::get_by_id(Member::class, $member);
         }
 
         $cachedPermission = self::cache_permission_check('delete', $member, $this->ID);
@@ -334,7 +330,7 @@ class Collectable
         }
 
         if ($member && is_numeric($member)) {
-            $member = DataObject::get_by_id('Member', $member);
+            $member = DataObject::get_by_id(Member::class, $member);
         }
 
         $cachedPermission = self::cache_permission_check('edit', $member, $this->ID);
@@ -383,7 +379,7 @@ class Collectable
         }
 
         if ($member && is_numeric($member)) {
-            $member = DataObject::get_by_id('Member', $member);
+            $member = DataObject::get_by_id(Member::class, $member);
         }
 
         $memberID = $member ? $member->ID : '?';

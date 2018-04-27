@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\TextField;
 
 /**
@@ -35,7 +36,7 @@ class CollectableDenomination
             'filter' => 'PartialMatchFilter',
         ],
         'Year' => [
-            'field' => 'NumericField',
+            'field' => NumericField::class,
             'filter' => 'PartialMatchFilter',
         ],
     ];

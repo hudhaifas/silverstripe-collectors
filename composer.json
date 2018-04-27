@@ -1,7 +1,7 @@
 {
     "name": "hudhaifas/silverstripe-collectors",
     "description": "Complete solution for stamps & currency collectors portal.",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "homepage": "https://github.com/hudhaifas/silverstripe-collectors",
     "keywords": ["silverstripe", "collectors", "stamp", "currency", "coin"],
     "license": "MIT",
@@ -12,15 +12,20 @@
         }
     ],
     "support": {
-        "issues": "http://github.com/hudhaifas/silverstripe-collectors/issues"
+        "issues": "https://github.com/hudhaifas/silverstripe-collectors/issues"
     },
     "require": {
-        "silverstripe/cms": "~3.0",
-        "silverstripe/framework": "~3.0",
+        "silverstripe/framework": "^4",
+        "silverstripe/cms": "^4",
+        "silverstripe/vendor-plugin": "^1.0",
         "silverstripe/tagfield": "^1.0",
         "hudhaifas/silverstripe-dataobject-manager": "dev-master"
     },
     "extra": {
-        "installer-name": "collectors"
+        "installer-name": "collectors",
+        "expose": [
+            "res/css",
+            "res/images"
+        ]
     }
 }

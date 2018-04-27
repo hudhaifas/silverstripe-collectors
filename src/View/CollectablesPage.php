@@ -1,5 +1,9 @@
 <?php
 
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Security\Group;
+use SilverStripe\Security\Permission;
+
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
@@ -28,7 +32,7 @@ class CollectablesPage
         $fields->addFieldToTab('Root.Main', new DropdownField(
                 'Collection', //
                 'Collection', //
-                singleton('CollectablesPage')->dbObject('Collection')->enumValues()
+                singleton(CollectablesPage::class)->dbObject('Collection')->enumValues()
         ));
 
         return $fields;

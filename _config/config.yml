@@ -2,6 +2,6 @@
 Name: collectors
 ---
 
-#Collectable:
-#  extensions:
-#    - DataObject_MemberExtension
+Collectable:
+  extensions:
+    - HudhaifaS\DOM\Extension\DataObject_MemberExtension

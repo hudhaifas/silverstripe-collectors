@@ -17,6 +17,6 @@ class CollectorsAdmin
     ];
     private static $url_segment = 'collectors';
     private static $menu_title = "Collectors";
-    private static $menu_icon = "collectors/images/stamp.png";
+    private static $menu_icon = "hudhaifas/silverstripe-collectors: res/images/stamp.png";
 
 }

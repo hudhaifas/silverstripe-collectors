@@ -16,7 +16,7 @@ class CollectablesPageController
     }
 
     protected function searchObjects($list, $keywords) {
-        return $list->filterAny(array(
+        return $list->filterAny([
                     'Title:PartialMatch' => $keywords,
                     'Summary:PartialMatch' => $keywords,
                     'Description:PartialMatch' => $keywords,
@@ -24,7 +24,7 @@ class CollectablesPageController
                     'Year:PartialMatch' => $keywords,
                     'SerialNumber:PartialMatch' => $keywords,
                     'Collector:PartialMatch' => $keywords,
-        ));
+        ]);
     }
 
     protected function getFiltersList() {

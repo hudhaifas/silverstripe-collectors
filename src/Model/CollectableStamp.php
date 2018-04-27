@@ -8,10 +8,10 @@
 class CollectableStamp
         extends CollectableDenomination {
 
-    private static $db = array(
+    private static $db = [
         'Condition' => "Enum('USED, UNUSED', 'UNUSED')",
-    );
-    private static $summary_fields = array(
+    ];
+    private static $summary_fields = [
         'Image.StripThumbnail',
         'Title',
         'Summary',
@@ -20,7 +20,7 @@ class CollectableStamp
         'Country',
         'Condition',
         'Quantity',
-    );
+    ];
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
@@ -36,7 +36,7 @@ class CollectableStamp
         // Remove existing fields
 
         if ($field = $fields->fieldByName('Root.Main.Image')) {
-            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->getValidator()->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
             $field->setFolderName("collectors/stamps");
         }
 
@@ -68,10 +68,10 @@ class CollectableStamp
     public function getObjectSummary() {
         $lists = parent::getObjectSummary();
 
-        $item = array(
+        $item = [
             'Title' => _t('Collectors.CONDITION', 'Condition'),
             'Value' => $this->TheCondition()
-        );
+        ];
         $lists->add($item);
 
         return $lists;

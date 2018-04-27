@@ -8,9 +8,9 @@
 class CollectablesPage
         extends DataObjectPage {
 
-    private static $db = array(
+    private static $db = [
         'Collection' => "Enum('Collectable, CollectableCurrency, CollectableBanknote, CollectableCoin, CollectableStamp', 'Collectable')",
-    );
+    ];
 
     /**
      */
@@ -18,7 +18,7 @@ class CollectablesPage
     private static $group_title = 'Collectors';
     private static $group_permission = 'CMS_ACCESS_CMSMain';
 
-    public function canCreate($member = false) {
+    public function canCreate($member = null, $context = []) {
         return true;
     }
 

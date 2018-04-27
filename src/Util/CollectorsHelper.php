@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\Security\Member;
+
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
@@ -7,7 +10,7 @@
  */
 class CollectorsHelper {
 
-    private static $groups = array('collectors');
+    private static $groups = ['collectors'];
     private static $libraryID = 1310;
     private static $patronID = 2;
     private static $bookID = 3;
@@ -30,24 +33,24 @@ class CollectorsHelper {
     }
 
     public static function search_all_collectables($request, $term) {
-        $records = array();
+        $records = [];
 
 //        // to fetch books that's name contains the given search term
-//        $books = DataObject::get('Book')->filterAny(array(
+//        $books = DataObject::get('Book')->filterAny([
 //            'Name:PartialMatch' => $term,
-//        ));
+//        ]);
 //
 //        foreach ($books as $o) {
 //            $records[] = $o;
 //        }
 //
 //        // to fetch authors that's name contains the given search term
-//        $authors = DataObject::get('BookAuthor')->filterAny(array(
+//        $authors = DataObject::get('BookAuthor')->filterAny([
 //            'NickName:PartialMatch' => $term,
 //            'FirstName:PartialMatch' => $term,
 //            'LastName:PartialMatch' => $term,
 //            'SurName:PartialMatch' => $term,
-//        ));
+//        ]);
 //
 //        foreach ($authors as $o) {
 //            foreach ($o->Books() as $b) {

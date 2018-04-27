@@ -2,14 +2,6 @@
 Name: collectors
 ---
 
-ArchivesAdmin:
-  extensions:
-    - SubsiteMenuExtension
-
-CollectorsAdmin:
-  extensions:
-    - SubsiteMenuExtension
-      
-Collectable:
-  extensions:
-    - DataObject_MemberExtension
+#Collectable:
+#  extensions:
+#    - DataObject_MemberExtension

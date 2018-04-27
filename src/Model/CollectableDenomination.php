@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Forms\TextField;
+
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
@@ -8,36 +10,36 @@
 class CollectableDenomination
         extends Collectable {
 
-    private static $db = array(
+    private static $db = [
         'Denomination' => 'Currency',
         'Currency' => 'Varchar(255)',
         'Quantity' => 'Int',
         'Year' => 'Int',
         'Calendar' => 'Varchar(255)',
         'Country' => 'Varchar(255)',
-    );
-    private static $defaults = array(
+    ];
+    private static $defaults = [
         'Quantity' => 1,
-    );
-    private static $searchable_fields = array(
-        'Denomination' => array(
-            'field' => 'TextField',
+    ];
+    private static $searchable_fields = [
+        'Denomination' => [
+            'field' => TextField::class,
             'filter' => 'PartialMatchFilter',
-        ),
-        'Currency' => array(
-            'field' => 'TextField',
+        ],
+        'Currency' => [
+            'field' => TextField::class,
             'filter' => 'PartialMatchFilter',
-        ),
-        'Country' => array(
-            'field' => 'TextField',
+        ],
+        'Country' => [
+            'field' => TextField::class,
             'filter' => 'PartialMatchFilter',
-        ),
-        'Year' => array(
+        ],
+        'Year' => [
             'field' => 'NumericField',
             'filter' => 'PartialMatchFilter',
-        ),
-    );
-    private static $summary_fields = array(
+        ],
+    ];
+    private static $summary_fields = [
         'Image.StripThumbnail',
         'Title',
         'Summary',
@@ -47,7 +49,7 @@ class CollectableDenomination
         'TheDate',
         'Country',
         'Quantity',
-    );
+    ];
     private static $default_sort = 'Year';
 
     public function fieldLabels($includerelations = true) {
@@ -68,7 +70,7 @@ class CollectableDenomination
         $fields = parent::getCMSFields();
 
         if ($field = $fields->fieldByName('Root.Main.Image')) {
-            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->getValidator()->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
             $field->setFolderName("collectors");
         }
 
@@ -106,42 +108,42 @@ class CollectableDenomination
         $lists = parent::getObjectSummary();
 
         if ($this->Country) {
-            $item = array(
+            $item = [
                 'Title' => _t('Collectors.COUNTRY', 'Country'),
                 'Value' => $this->Country
-            );
+            ];
             $lists->add($item);
         }
 
         if ($this->Description) {
-            $item = array(
+            $item = [
                 'Title' => _t('Collectors.DESCRIPTION', 'Description'),
                 'Value' => $this->Description
-            );
+            ];
             $lists->add($item);
         }
 
         if ($this->Denomination && $this->Currency) {
-            $item = array(
+            $item = [
                 'Title' => _t('Collectors.VALUE', 'Value'),
                 'Value' => $this->Denomination . ' ' . $this->Currency
-            );
+            ];
             $lists->add($item);
         }
 
         if ($this->TheDate()) {
-            $item = array(
+            $item = [
                 'Title' => _t('Collectors.DATE', 'Date'),
                 'Value' => $this->TheDate()
-            );
+            ];
             $lists->add($item);
         }
 
         if ($this->Quantity) {
-            $item = array(
+            $item = [
                 'Title' => _t('Collectors.QUANTITY', 'Quantity'),
                 'Value' => $this->Quantity
-            );
+            ];
             $lists->add($item);
         }
 
@@ -167,7 +169,7 @@ class CollectableDenomination
 
     //////// SearchableDataObject //////// 
     public function getObjectRichSnippets() {
-        $schema = array();
+        $schema = [];
 
         $schema['@type'] = "CreativeWork";
         $schema['dateCreated'] = $this->TheDate();

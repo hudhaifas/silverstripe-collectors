@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Assets\Image;
+
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
@@ -8,10 +10,10 @@
 class CollectableCurrency
         extends CollectableDenomination {
 
-    private static $has_one = array(
-        'BackImage' => 'Image',
-    );
-    private static $summary_fields = array(
+    private static $has_one = [
+        'BackImage' => Image::class,
+    ];
+    private static $summary_fields = [
         'Image.StripThumbnail',
         'BackImage.StripThumbnail',
         'Title',
@@ -22,7 +24,7 @@ class CollectableCurrency
         'TheDate',
         'Country',
         'Quantity',
-    );
+    ];
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
@@ -41,7 +43,7 @@ class CollectableCurrency
         }
 
         if ($field = $fields->fieldByName('Root.Main.BackImage')) {
-            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->getValidator()->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
             $field->setFolderName("collectors/currency");
         }
 
@@ -73,11 +75,11 @@ class CollectableCurrency
         $lists = parent::getObjectTabs();
 
         if ($this->BackImage()->exists()) {
-            $item = array(
+            $item = [
                 'Title' => _t('Collectors.OTHER_SIDE', 'Other Side'),
                 'Content' => $this
-                        ->renderWith('Tab_BackImages')
-            );
+                        ->renderWith('Includes/Tab_BackImages')
+            ];
             $lists->add($item);
         }
 

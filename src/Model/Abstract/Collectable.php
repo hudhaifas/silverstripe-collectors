@@ -1,5 +1,20 @@
 <?php
 
+use HudhaifaS\DOM\Model\ManageableDataObject;
+use HudhaifaS\DOM\Model\SearchableDataObject;
+use HudhaifaS\DOM\Model\SociableDataObject;
+use SilverStripe\Assets\Image;
+use SilverStripe\Control\Director;
+use SilverStripe\Forms\ListboxField;
+use SilverStripe\Forms\OptionsetField;
+use SilverStripe\Forms\Tab;
+use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Group;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
@@ -9,7 +24,8 @@ class Collectable
         extends DataObject
         implements ManageableDataObject, SearchableDataObject, SociableDataObject {
 
-    private static $db = array(
+    private static $table_name = 'Collectable';
+    private static $db = [
         'SerialNumber' => 'Varchar(20)', // Unique serial number
         'Title' => 'Varchar(255)',
         'Summary' => 'Varchar(255)',
@@ -19,44 +35,44 @@ class Collectable
         // Permession Level
         "CanViewType" => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'Anyone')",
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",
-    );
-    private static $has_one = array(
-        'Image' => 'Image',
-    );
-    private static $has_many = array(
-        'OtherImages' => 'CollectableImage',
-    );
-    private static $many_many = array(
-        "ViewerGroups" => "Group",
-        "EditorGroups" => "Group",
-        "ViewerMembers" => "Member",
-        "EditorMembers" => "Member",
-    );
-    private static $defaults = array(
+    ];
+    private static $has_one = [
+        'Image' => Image::class,
+    ];
+    private static $has_many = [
+        'OtherImages' => CollectableImage::class,
+    ];
+    private static $many_many = [
+        "ViewerGroups" => Group::class,
+        "EditorGroups" => Group::class,
+        "ViewerMembers" => Member::class,
+        "EditorMembers" => Member::class,
+    ];
+    private static $defaults = [
         "CanViewType" => "Anyone",
         "CanEditType" => "OnlyTheseUsers"
-    );
-    private static $searchable_fields = array(
-        'Title' => array(
-            'field' => 'TextField',
+    ];
+    private static $searchable_fields = [
+        'Title' => [
+            'field' => TextField::class,
             'filter' => 'PartialMatchFilter',
-        ),
-        'Summary' => array(
-            'field' => 'TextField',
+        ],
+        'Summary' => [
+            'field' => TextField::class,
             'filter' => 'PartialMatchFilter',
-        ),
-        'Description' => array(
-            'field' => 'TextField',
+        ],
+        'Description' => [
+            'field' => TextField::class,
             'filter' => 'PartialMatchFilter',
-        ),
-    );
-    private static $summary_fields = array(
+        ],
+    ];
+    private static $summary_fields = [
         'Image.StripThumbnail',
         'Title',
         'Summary',
         'Description',
-    );
-    private static $cache_permissions = array();
+    ];
+    private static $cache_permissions = [];
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
@@ -90,7 +106,7 @@ class Collectable
         $fields->insertAfter('Main', $detailsTab);
 
         if ($field = $fields->fieldByName('Root.Main.Image')) {
-            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->getValidator()->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
             $field->setFolderName("collectors");
         }
 
@@ -111,14 +127,14 @@ class Collectable
 
     public function getPrivacyFields(&$fields) {
         // Prepare groups and members lists
-        $groupsMap = array();
+        $groupsMap = [];
         foreach (Group::get() as $group) {
             // Listboxfield values are escaped, use ASCII char instead of &raquo;
             $groupsMap[$group->ID] = $group->getBreadcrumbs(' > ');
         }
         asort($groupsMap);
 
-        $membersMap = array();
+        $membersMap = [];
         foreach (Member::get() as $member) {
             // Listboxfield values are escaped, use ASCII char instead of &raquo;
             $membersMap[$member->ID] = $member->getTitle();
@@ -126,16 +142,16 @@ class Collectable
         asort($membersMap);
 
         // Prepare Options
-        $viewersOptionsSource = array(
+        $viewersOptionsSource = [
             "Anyone" => _t('Archives.ACCESSANYONE', "Anyone"),
             "LoggedInUsers" => _t('Archives.ACCESSLOGGEDIN', "All Logged-in users"),
             "OnlyTheseUsers" => _t('Archives.ACCESSONLYTHESE', "Only these people (choose from list)")
-        );
+        ];
 
-        $editorsOptionsSource = array(
+        $editorsOptionsSource = [
             "LoggedInUsers" => _t('Archives.ACCESSLOGGEDIN', "All Logged-in users"),
             "OnlyTheseUsers" => _t('Archives.ACCESSONLYTHESE', "Only these people (choose from list)")
-        );
+        ];
 
         // Remove existing fields
         $fields->removeFieldFromTab('Root.Main', 'CanViewType');
@@ -154,7 +170,7 @@ class Collectable
         $privacyTab = new Tab('PrivacyTab', _t('Archives.PRIVACY', 'Privacy'));
         $fields->insertAfter('OtherImages', $privacyTab);
 
-        $fields->addFieldsToTab('Root.PrivacyTab', array(
+        $fields->addFieldsToTab('Root.PrivacyTab', [
             OptionsetField::create(
                     "CanViewType", _t('Archives.CAN_VIEW_TYPE', 'Who can view this person?')
             )->setSource($viewersOptionsSource), //
@@ -177,14 +193,14 @@ class Collectable
                     ->setMultiple(true)
                     ->setSource($membersMap)
                     ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
-        ));
+        ]);
     }
 
     function Link($action = null) {
         $page = CollectablesPage::get()
-                ->filter(array(
+                ->filter([
                     'Collection' => $this->ClassName
-                ))
+                ])
                 ->first();
 
         return $page ? $page->Link($action) : null;
@@ -211,7 +227,7 @@ class Collectable
     }
 
     /// Permissions ///
-    public function canCreate($member = false) {
+    public function canCreate($member = null, $context = []) {
         if (!$this->isCreatable()) {
             return false;
         }
@@ -246,7 +262,7 @@ class Collectable
         return false;
     }
 
-    public function canView($member = false) {
+    public function canView($member = null) {
         if (!$member) {
             $member = Member::currentUserID();
         }
@@ -286,7 +302,7 @@ class Collectable
         return self::cache_permission_check('view', $member, $this->ID, false);
     }
 
-    public function canDelete($member = false) {
+    public function canDelete($member = null) {
         if (!$member) {
             $member = Member::currentUserID();
         }
@@ -312,7 +328,7 @@ class Collectable
         return false;
     }
 
-    public function canEdit($member = false) {
+    public function canEdit($member = null) {
         if (!$member) {
             $member = Member::currentUserID();
         }
@@ -388,7 +404,7 @@ class Collectable
 
     //////// ManageableDataObject //////// 
     public function getObjectItem() {
-        return $this->renderWith('Collectable_Item');
+        return $this->renderWith('Includes/Collectable_Item');
     }
 
     public function getObjectImage() {
@@ -413,9 +429,9 @@ class Collectable
 
     public function getObjectRelated() {
         $list = $this->get()
-                ->filter(array(
+                ->filter([
                     'ID:Negation' => $this->ID
-                ))
+                ])
                 ->filterByCallback(function($record) {
                     return $record->canView();
                 })
@@ -425,18 +441,18 @@ class Collectable
     }
 
     public function getObjectSummary() {
-        $lists = array();
+        $lists = [];
 
         if ($this->Subtitle()) {
-            $lists[] = array(
+            $lists[] = [
                 'Value' => $this->Subtitle()
-            );
+            ];
         }
 
         if ($this->Summary) {
-            $lists[] = array(
+            $lists[] = [
                 'Value' => $this->Summary
-            );
+            ];
         }
 
         return new ArrayList($lists);
@@ -447,20 +463,20 @@ class Collectable
     }
 
     public function getObjectTabs() {
-        $lists = array();
+        $lists = [];
 
         if ($this->OtherImages()->Count()) {
-            $lists[] = array(
+            $lists[] = [
                 'Title' => _t('Collectors.OTHER_IMAGES', 'Other Images'),
-                'Content' => $this->renderWith('Tab_OtherImages')
-            );
+                'Content' => $this->renderWith('Includes/Tab_OtherImages')
+            ];
         }
 
         if ($this->Explanations) {
-            $lists[] = array(
+            $lists[] = [
                 'Title' => _t('Collectors.EXPLANATIONS', 'Explanations'),
                 'Content' => $this->Explanations
-            );
+            ];
         }
 
         $this->extend('extraTabs', $lists);
@@ -488,7 +504,7 @@ class Collectable
 
     //////// SearchableDataObject //////// 
     public function getObjectRichSnippets() {
-        $schema = array();
+        $schema = [];
 
         $schema['@type'] = "Thing";
         $schema['image'] = $this->Image()->URL;

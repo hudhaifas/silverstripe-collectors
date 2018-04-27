@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\Assets\Image;
+use SilverStripe\ORM\DataObject;
+
 /**
  *
  * @author Hudhaifa Shatnawi <hudhaifa.shatnawi@gmail.com>
@@ -8,14 +11,14 @@
 class CollectableImage
         extends DataObject {
 
-    private static $db = array(
+    private static $db = [
         'Title' => 'Varchar(255)',
         'Description' => 'Text',
-    );
-    private static $has_one = array(
-        'Image' => 'Image',
-        'Collectable' => 'Collectable',
-    );
+    ];
+    private static $has_one = [
+        'Image' => Image::class,
+        'Collectable' => Collectable::class,
+    ];
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
@@ -31,7 +34,7 @@ class CollectableImage
         $fields = parent::getCMSFields();
 
         if ($field = $fields->fieldByName('Root.Main.Image')) {
-            $field->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $field->getValidator()->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
             $field->setFolderName("collectors");
         }
         return $fields;

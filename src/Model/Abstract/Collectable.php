@@ -38,7 +38,7 @@ class Collectable
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'OnlyTheseUsers')",
     ];
     private static $has_one = [
-        ':ExactMatch:not' => Image::class,
+        'Image' => Image::class,
     ];
     private static $has_many = [
         'OtherImages' => CollectableImage::class,

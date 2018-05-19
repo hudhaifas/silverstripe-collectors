@@ -68,7 +68,7 @@ class Collectable
         ],
     ];
     private static $summary_fields = [
-        'Image.StripThumbnail',
+        'Image',
         'Title',
         'Summary',
         'Description',

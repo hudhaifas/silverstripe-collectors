@@ -14,8 +14,8 @@ class CollectableCurrency
         'BackImage' => Image::class,
     ];
     private static $summary_fields = [
-        'Image.StripThumbnail',
-        'BackImage.StripThumbnail',
+        'Image',
+        'BackImage',
         'Title',
         'Summary',
         'Description',

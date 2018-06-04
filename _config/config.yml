@@ -4,4 +4,4 @@ Name: collectors
 
 Collectable:
   extensions:
-    - HudhaifaS\DOM\Extension\DataObject_MemberExtension
+    - HudhaifaS\Extension\MemberOwnershipExtension

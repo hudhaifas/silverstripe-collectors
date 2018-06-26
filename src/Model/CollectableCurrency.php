@@ -68,7 +68,7 @@ class CollectableCurrency
     }
 
     public function getObjectDefaultImage() {
-        return "hudhaifas/silverstripe-collectors: res/images/default-coin.png";
+        return ModuleLoader::getModule('hudhaifas/silverstripe-collectors')->getResource('res/images/default-coin.png')->getURL();
     }
 
     public function getObjectTabs() {

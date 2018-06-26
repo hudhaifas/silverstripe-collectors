@@ -417,7 +417,7 @@ class Collectable
     }
 
     public function getObjectDefaultImage() {
-        return "hudhaifas/silverstripe-collectors: res/images/default-stamp.png";
+        return ModuleLoader::getModule('hudhaifas/silverstripe-collectors')->getResource('res/images/default-stamp.png')->getURL();
     }
 
     public function getObjectLink() {

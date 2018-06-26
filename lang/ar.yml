@@ -1,6 +1,4 @@
 ar:
-  ArchivesAdmin:
-    MENUTITLE: 'الأرشيف'
   CollectorsAdmin:
     MENUTITLE: 'هواة الجمع'
   Collectable:

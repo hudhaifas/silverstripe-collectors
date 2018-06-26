@@ -5,6 +5,7 @@ use HudhaifaS\DOM\Model\SearchableDataObject;
 use HudhaifaS\DOM\Model\SociableDataObject;
 use SilverStripe\Assets\Image;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Manifest\ModuleLoader;
 use SilverStripe\Forms\ListboxField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\Tab;

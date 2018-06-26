@@ -1,6 +1,7 @@
 <?php
 
 use SilverStripe\Assets\Image;
+use SilverStripe\Core\Manifest\ModuleLoader;
 
 /**
  *

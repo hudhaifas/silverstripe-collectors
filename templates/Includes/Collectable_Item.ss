@@ -1,6 +1,6 @@
 <div style="height: auto;">
     <a <% if not $isObjectDisabled %>href="$ObjectLink"<% end_if %> title="$ObjectTitle">
-        <div class="thumbnail text-center col-sm-12 dataobject-image">
+        <div class="card text-center col-sm-12 dataobject-image">
             <% include List_Image %>
 
             <% if not $isObjectDisabled %>

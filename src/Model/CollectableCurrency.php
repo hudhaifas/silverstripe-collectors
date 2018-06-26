@@ -68,7 +68,7 @@ class CollectableCurrency
     }
 
     public function getObjectDefaultImage() {
-        return "collectors/images/default-coin.png";
+        return "hudhaifas/silverstripe-collectors: res/images/default-coin.png";
     }
 
     public function getObjectTabs() {

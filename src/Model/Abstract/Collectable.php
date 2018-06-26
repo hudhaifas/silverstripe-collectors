@@ -417,7 +417,7 @@ class Collectable
     }
 
     public function getObjectDefaultImage() {
-        return "collectors/images/default-stamp.png";
+        return "hudhaifas/silverstripe-collectors: res/images/default-stamp.png";
     }
 
     public function getObjectLink() {

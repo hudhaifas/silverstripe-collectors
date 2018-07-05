@@ -69,7 +69,7 @@ class Collectable
         ],
     ];
     private static $summary_fields = [
-        'ThumbImage',
+        'FrontImageThumb',
         'Title',
         'Summary',
         'Description',
@@ -84,7 +84,7 @@ class Collectable
         $labels = parent::fieldLabels($includerelations);
 
         $labels['Image'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
-        $labels['Image.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+        $labels['FrontImageThumb'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
         $labels['OtherImages'] = _t('Collectors.OTHER_IMAGES', 'Other Images');
 
         $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
@@ -233,7 +233,7 @@ class Collectable
         return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
     }
 
-    public function ThumbImage() {
+    public function FrontImageThumb() {
         return $this->owner->Image()->StripThumbnail();
     }
 

@@ -41,7 +41,7 @@ class CollectableDenomination
         ],
     ];
     private static $summary_fields = [
-        'Image',
+        'FrontImageThumb',
         'Title',
         'Summary',
         'Description',

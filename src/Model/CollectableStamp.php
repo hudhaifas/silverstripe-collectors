@@ -12,7 +12,7 @@ class CollectableStamp
         'Condition' => "Enum('USED, UNUSED', 'UNUSED')",
     ];
     private static $summary_fields = [
-        'Image',
+        'FrontImageThumb',
         'Title',
         'Summary',
         'Description',

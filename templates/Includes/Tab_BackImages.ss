@@ -1,12 +1,16 @@
-<div class="dataobject-gallery row">
-    <div class="col-md-3 col-xs-6">
-        <div class="thumbnail text-center">
-            <a href="$BackImage.URL" data-lightbox="dataobject-gallery" data-title="{$Title} <p>{$Content}</p>">
-                <img src="$BackImage.Square(120).URL" alt="{$Title}" class="img-responsive" />
-                <div class="caption">
-                    <h4>$Title</h4>
-                    <p>$Description.LimitCharacters(110)</p>
+<div class="row dataobject-grid dataobject-xs">
+    <div class="col-sm-3 col-6 dataobject-item dataobject-item-brief">
+        <div style="height: auto;">
+            <a href="$Image.URL" data-lightbox="dataobject-gallery" data-title="{$Title} <p>{$Content}</p>">
+                <div class="card text-center col-sm-12 dataobject-image">
+                    <img src="$Image.Square(120).URL" alt="{$Title}" class="img-responsive" />
                 </div>
+
+                <div class="content col-sm-12 ellipsis">
+                    <p class="title">
+                        $Title
+                    </p>
+                </div>		
             </a>
         </div>
     </div>

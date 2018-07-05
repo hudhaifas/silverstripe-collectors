@@ -69,7 +69,7 @@ class Collectable
         ],
     ];
     private static $summary_fields = [
-        'Image',
+        'ThumbImage',
         'Title',
         'Summary',
         'Description',
@@ -176,25 +176,30 @@ class Collectable
         $privacyTab = new Tab('PrivacyTab', _t('Archives.PRIVACY', 'Privacy'));
         $fields->insertAfter('OtherImages', $privacyTab);
 
-        $fields->addFieldsToTab('Root.PrivacyTab', [
+        $fields->addFieldsToTab('Root.PrivacyTab',
+                [
             OptionsetField::create(
                     "CanViewType", _t('Archives.CAN_VIEW_TYPE', 'Who can view this person?')
             )->setSource($viewersOptionsSource), //
             ListboxField::create("ViewerGroups", _t('Archives.VIEWER_GROUPS', "Viewer Groups"))
                     ->setSource($groupsMap)
-                    ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
             ListboxField::create("ViewerMembers", _t('Archives.VIEWER_MEMBERS', "Viewer Users"))
                     ->setSource($membersMap)
-                    ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user')), //
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user')), //
             OptionsetField::create(
                     "CanEditType", _t('Archives.CAN_EDIT_TYPE', 'Who can edit this person?')
             )->setSource($editorsOptionsSource), //
             ListboxField::create("EditorGroups", _t('Archives.EDITOR_GROUPS', "Editor Groups"))
                     ->setSource($groupsMap)
-                    ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
             ListboxField::create("EditorMembers", _t('Archives.EDITOR_MEMBERS', "Editor Users"))
                     ->setSource($membersMap)
-                    ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
         ]);
     }
 
@@ -226,6 +231,10 @@ class Collectable
 
     function TheDate() {
         return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
+    }
+
+    public function ThumbImage() {
+        return $this->owner->Image()->StripThumbnail();
     }
 
     /// Permissions ///
@@ -363,7 +372,8 @@ class Collectable
         }
 
         // check for any logged-in users with CMS access
-        if ($this->CanEditType === 'LoggedInUsers' && Permission::checkMember($member, $this->config()->required_permission)) {
+        if ($this->CanEditType === 'LoggedInUsers' && Permission::checkMember($member,
+                        $this->config()->required_permission)) {
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }
 

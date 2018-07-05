@@ -353,7 +353,7 @@ class Collectable
             return true;
         }
 
-        if ($member && $this->hasMethod('CreatedBy') && $member == $this->CreatedBy()) {
+        if ($member && $this->hasMethod('CreatedBy') && $this->CreatedBy() && $member->ID == $this->CreatedBy()->ID) {
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }
 

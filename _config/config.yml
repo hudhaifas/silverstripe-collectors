@@ -1,5 +1,6 @@
 ---
 Name: collectors
+After: dataobject-manager
 ---
 
 Collectable:

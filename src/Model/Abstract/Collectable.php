@@ -1,8 +1,7 @@
 <?php
 
 use HudhaifaS\DOM\Model\ManageableDataObject;
-use HudhaifaS\DOM\Model\SearchableDataObject;
-use HudhaifaS\DOM\Model\SociableDataObject;
+use HudhaifaS\DOM\Model\DiscoverableDataObject;
 use SilverStripe\Assets\Image;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Manifest\ModuleLoader;
@@ -24,7 +23,7 @@ use SilverStripe\Versioned\Versioned;
  */
 class Collectable
         extends DataObject
-        implements ManageableDataObject, SearchableDataObject, SociableDataObject {
+        implements ManageableDataObject, DiscoverableDataObject {
 
     private static $table_name = 'Collectable';
     private static $db = [
@@ -514,8 +513,8 @@ class Collectable
         return $this->canView();
     }
 
-    //////// SearchableDataObject //////// 
-    public function getObjectRichSnippets() {
+    //////// DiscoverableDataObject //////// 
+    public function getObjectMarkup() {
         $schema = [];
 
         $schema['@type'] = "Thing";
@@ -526,7 +525,7 @@ class Collectable
     }
 
     //////// SociableDataObject //////// 
-    public function getSocialDescription() {
+    public function getObjectDescription() {
         if ($this->Summary) {
             return $this->Summary;
         } elseif ($this->Description) {

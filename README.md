@@ -2,7 +2,7 @@
 Complete solution for stamps & currency collectors portal
 
 ### Requirements
- - SilverStripe 4.*
+ - SilverStripe 5.*
  
 ### Installation
 - Install the module through composer:

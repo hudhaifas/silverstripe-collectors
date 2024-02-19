@@ -14,6 +14,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Group;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 use SilverStripe\Versioned\Versioned;
 
 /**
@@ -243,7 +244,7 @@ class Collectable
         }
 
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -274,7 +275,7 @@ class Collectable
 
     public function canView($member = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -314,7 +315,7 @@ class Collectable
 
     public function canDelete($member = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -340,7 +341,7 @@ class Collectable
 
     public function canEdit($member = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -390,7 +391,7 @@ class Collectable
 
     public static function cache_permission_check($typeField, $member, $personID, $result = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -413,7 +414,7 @@ class Collectable
         return self::$cache_permissions[$cacheKey];
     }
 
-    //////// ManageableDataObject //////// 
+    //////// ManageableDataObject ////////
     public function getObjectItem() {
         return $this->renderWith('Includes/Collectable_Item');
     }
@@ -470,7 +471,7 @@ class Collectable
     }
 
     public function getObjectNav() {
-        
+
     }
 
     public function getObjectTabs() {
@@ -513,7 +514,7 @@ class Collectable
         return $this->canView();
     }
 
-    //////// DiscoverableDataObject //////// 
+    //////// DiscoverableDataObject ////////
     public function getObjectMarkup() {
         $schema = [];
 
@@ -524,7 +525,7 @@ class Collectable
         return $schema;
     }
 
-    //////// SociableDataObject //////// 
+    //////// SociableDataObject ////////
     public function getObjectDescription() {
         if ($this->Summary) {
             return $this->Summary;

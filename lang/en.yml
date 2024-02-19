@@ -41,9 +41,7 @@ en:
     SETS: 'Sets'
     SET: 'Set'
     NAME: 'Name'
-    BACK_IMAGE: 'Back Image'
     CONDITION: 'Condition'
-    TITLE: 'Title'
     NUMBER_OF_COLLECTABLE: 'Number Of Collectables'
     USED: 'Used'
     UNUSED: 'Unused'
@@ -59,9 +57,9 @@ en:
     TOWNS: 'Towns'
 
     # Extension
-    COLLECTABLES: 'Collectables'    
-    DOCUMENTS: 'Documents'    
-    ARTICLES: 'Articles'    
+    COLLECTABLES: 'Collectables'
+    DOCUMENTS: 'Documents'
+    ARTICLES: 'Articles'
     PHOTOS: 'Photos'
     ARTWORKS: 'Artworks'
 
@@ -74,4 +72,4 @@ en:
     EDITOR_GROUPS: 'Editor Groups'
     EDITOR_MEMBERS: 'Editor Users'
     GROUP_PLACEHOLDER: 'Click to select group'
-    MEMBER_PLACEHOLDER: 'Click to select user'    
+    MEMBER_PLACEHOLDER: 'Click to select user'

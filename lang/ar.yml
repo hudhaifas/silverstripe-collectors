@@ -41,10 +41,8 @@ ar:
     SETS: 'الإصدارات'
     SET: 'الإصدار'
     NAME: 'الاسم'
-    BACK_IMAGE: 'الصورة الخلفية'
     CONDITION: 'الحالة'
-    TITLE: 'العنوان'
-    NUMBER_OF_COLLECTABLE: 'عدد المجموعات'    
+    NUMBER_OF_COLLECTABLE: 'عدد المجموعات'
     USED: 'مستخدم'
     UNUSED: 'غير مستخدم'
     IS_PRIVATE: 'وثيقة خاصة'
@@ -58,9 +56,9 @@ ar:
     TOWNS: 'المدن'
 
     # Extension
-    COLLECTABLES: 'المقتنيات'    
-    DOCUMENTS: 'الوثائق'    
-    ARTICLES: 'المقالات'    
+    COLLECTABLES: 'المقتنيات'
+    DOCUMENTS: 'الوثائق'
+    ARTICLES: 'المقالات'
     PHOTOS: 'الصور'
     ARTWORKS: 'الأعمال الفنية'
 

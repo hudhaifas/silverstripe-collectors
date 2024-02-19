@@ -10,14 +10,14 @@ use SilverStripe\ORM\DataObject;
 class CollectablesPageController
         extends DataObjectPageController {
 
-    protected function getObjectsList() {
+    public function getObjectsList() {
         return DataObject::get($this->Collection)
                         ->filterByCallback(function($record) {
                             return $record->canView();
                         });
     }
 
-    protected function searchObjects($list, $keywords) {
+    public function searchObjects($list, $keywords) {
         return $list->filterAny([
                     'Title:PartialMatch' => $keywords,
                     'Summary:PartialMatch' => $keywords,

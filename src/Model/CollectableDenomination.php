@@ -41,7 +41,7 @@ class CollectableDenomination
         ],
     ];
     private static $summary_fields = [
-        'Image',
+        'FrontImageThumb',
         'Title',
         'Summary',
         'Description',
@@ -168,8 +168,8 @@ class CollectableDenomination
         return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
     }
 
-    //////// SearchableDataObject //////// 
-    public function getObjectRichSnippets() {
+    //////// DiscoverableDataObject //////// 
+    public function getObjectMarkup() {
         $schema = [];
 
         $schema['@type'] = "CreativeWork";

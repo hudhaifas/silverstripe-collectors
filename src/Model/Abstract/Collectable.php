@@ -1,8 +1,7 @@
 <?php
 
 use HudhaifaS\DOM\Model\ManageableDataObject;
-use HudhaifaS\DOM\Model\SearchableDataObject;
-use HudhaifaS\DOM\Model\SociableDataObject;
+use HudhaifaS\DOM\Model\DiscoverableDataObject;
 use SilverStripe\Assets\Image;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Manifest\ModuleLoader;
@@ -15,6 +14,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Group;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 use SilverStripe\Versioned\Versioned;
 
 /**
@@ -24,7 +24,7 @@ use SilverStripe\Versioned\Versioned;
  */
 class Collectable
         extends DataObject
-        implements ManageableDataObject, SearchableDataObject, SociableDataObject {
+        implements ManageableDataObject, DiscoverableDataObject {
 
     private static $table_name = 'Collectable';
     private static $db = [
@@ -69,7 +69,7 @@ class Collectable
         ],
     ];
     private static $summary_fields = [
-        'Image',
+        'FrontImageThumb',
         'Title',
         'Summary',
         'Description',
@@ -84,7 +84,7 @@ class Collectable
         $labels = parent::fieldLabels($includerelations);
 
         $labels['Image'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
-        $labels['Image.StripThumbnail'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
+        $labels['FrontImageThumb'] = _t('Collectors.FRONT_IMAGE', 'Front Image');
         $labels['OtherImages'] = _t('Collectors.OTHER_IMAGES', 'Other Images');
 
         $labels['SerialNumber'] = _t('Collectors.SERIAL_NUMBER', 'Serial Number');
@@ -176,25 +176,30 @@ class Collectable
         $privacyTab = new Tab('PrivacyTab', _t('Archives.PRIVACY', 'Privacy'));
         $fields->insertAfter('OtherImages', $privacyTab);
 
-        $fields->addFieldsToTab('Root.PrivacyTab', [
+        $fields->addFieldsToTab('Root.PrivacyTab',
+                [
             OptionsetField::create(
                     "CanViewType", _t('Archives.CAN_VIEW_TYPE', 'Who can view this person?')
             )->setSource($viewersOptionsSource), //
             ListboxField::create("ViewerGroups", _t('Archives.VIEWER_GROUPS', "Viewer Groups"))
                     ->setSource($groupsMap)
-                    ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
             ListboxField::create("ViewerMembers", _t('Archives.VIEWER_MEMBERS', "Viewer Users"))
                     ->setSource($membersMap)
-                    ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user')), //
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user')), //
             OptionsetField::create(
                     "CanEditType", _t('Archives.CAN_EDIT_TYPE', 'Who can edit this person?')
             )->setSource($editorsOptionsSource), //
             ListboxField::create("EditorGroups", _t('Archives.EDITOR_GROUPS', "Editor Groups"))
                     ->setSource($groupsMap)
-                    ->setAttribute('data-placeholder', _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.GROUP_PLACEHOLDER', 'Click to select group')), //
             ListboxField::create("EditorMembers", _t('Archives.EDITOR_MEMBERS', "Editor Users"))
                     ->setSource($membersMap)
-                    ->setAttribute('data-placeholder', _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
+                    ->setAttribute('data-placeholder',
+                            _t('Archives.MEMBER_PLACEHOLDER', 'Click to select user'))
         ]);
     }
 
@@ -228,6 +233,10 @@ class Collectable
         return $this->Year ? $this->Year . ' ' . $this->Calendar : null;
     }
 
+    public function FrontImageThumb() {
+        return $this->owner->Image()->StripThumbnail();
+    }
+
     /// Permissions ///
     public function canCreate($member = null, $context = []) {
         if (!$this->isCreatable()) {
@@ -235,7 +244,7 @@ class Collectable
         }
 
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -266,7 +275,7 @@ class Collectable
 
     public function canView($member = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -306,7 +315,7 @@ class Collectable
 
     public function canDelete($member = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -332,7 +341,7 @@ class Collectable
 
     public function canEdit($member = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -353,7 +362,7 @@ class Collectable
             return true;
         }
 
-        if ($member && $this->hasMethod('CreatedBy') && $member == $this->CreatedBy()) {
+        if ($member && $this->hasMethod('CreatedBy') && $this->CreatedBy() && $member->ID == $this->CreatedBy()->ID) {
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }
 
@@ -363,7 +372,8 @@ class Collectable
         }
 
         // check for any logged-in users with CMS access
-        if ($this->CanEditType === 'LoggedInUsers' && Permission::checkMember($member, $this->config()->required_permission)) {
+        if ($this->CanEditType === 'LoggedInUsers' && Permission::checkMember($member,
+                        $this->config()->required_permission)) {
             return self::cache_permission_check('edit', $member, $this->ID, true);
         }
 
@@ -381,7 +391,7 @@ class Collectable
 
     public static function cache_permission_check($typeField, $member, $personID, $result = null) {
         if (!$member) {
-            $member = Member::currentUserID();
+            $member = Security::getCurrentUser()?->ID;
         }
 
         if ($member && is_numeric($member)) {
@@ -404,7 +414,7 @@ class Collectable
         return self::$cache_permissions[$cacheKey];
     }
 
-    //////// ManageableDataObject //////// 
+    //////// ManageableDataObject ////////
     public function getObjectItem() {
         return $this->renderWith('Includes/Collectable_Item');
     }
@@ -461,7 +471,7 @@ class Collectable
     }
 
     public function getObjectNav() {
-        
+
     }
 
     public function getObjectTabs() {
@@ -504,8 +514,8 @@ class Collectable
         return $this->canView();
     }
 
-    //////// SearchableDataObject //////// 
-    public function getObjectRichSnippets() {
+    //////// DiscoverableDataObject ////////
+    public function getObjectMarkup() {
         $schema = [];
 
         $schema['@type'] = "Thing";
@@ -515,8 +525,8 @@ class Collectable
         return $schema;
     }
 
-    //////// SociableDataObject //////// 
-    public function getSocialDescription() {
+    //////// SociableDataObject ////////
+    public function getObjectDescription() {
         if ($this->Summary) {
             return $this->Summary;
         } elseif ($this->Description) {

@@ -15,8 +15,8 @@ class CollectableCurrency
         'BackImage' => Image::class,
     ];
     private static $summary_fields = [
-        'Image',
-        'BackImage',
+        'FrontImageThumb',
+        'BackThumbImage',
         'Title',
         'Summary',
         'Description',
@@ -31,7 +31,7 @@ class CollectableCurrency
         $labels = parent::fieldLabels($includerelations);
 
         $labels['BackImage'] = _t('Collectors.BACK_IMAGE', 'Back Image');
-        $labels['BackImage.StripThumbnail'] = _t('Collectors.BACK_IMAGE', 'Back Image');
+        $labels['BackThumbImage'] = _t('Collectors.BACK_IMAGE', 'Back Image');
 
         return $labels;
     }
@@ -85,6 +85,10 @@ class CollectableCurrency
         }
 
         return $lists;
+    }
+
+    public function BackThumbImage() {
+        return $this->owner->Image()->StripThumbnail();
     }
 
 }

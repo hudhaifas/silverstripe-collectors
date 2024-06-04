@@ -3,7 +3,7 @@
         <div style="height: auto;">
             <a href="$Image.URL" data-lightbox="dataobject-gallery" data-title="{$Title} <p>{$Content}</p>">
                 <div class="card text-center col-sm-12 dataobject-image">
-                    <img src="$Image.Square(120).URL" alt="{$Title}" class="img-responsive" />
+                    <img src="$Image.Square(120).URL" loading="lazy" alt="{$Title}" class="img-responsive" />
                 </div>
 
                 <div class="content col-sm-12 ellipsis">

@@ -2,7 +2,3 @@
 Name: collectors
 After: dataobject-manager
 ---
-
-Collectable:
-  extensions:
-    - HudhaifaS\Extension\MemberOwnershipExtension

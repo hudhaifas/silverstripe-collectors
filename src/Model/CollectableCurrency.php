@@ -76,15 +76,25 @@ class CollectableCurrency
         $lists = parent::getObjectTabs();
 
         if ($this->BackImage()->exists()) {
-            $item = [
+            $lists[] = [
+                'Key' => 'back_image',
                 'Title' => _t('Collectors.OTHER_SIDE', 'Other Side'),
-                'Content' => $this
-                        ->renderWith('Includes/Tab_BackImages')
             ];
-            $lists->add($item);
         }
 
         return $lists;
+    }
+
+    public function getObjectTabContent($tabKey, $page = 1) {
+        switch ($tabKey) {
+            case 'back_image':
+                if ($this->BackImage()->exists()) {
+                    return $this->renderWith('Includes/Tab_BackImages');
+                }
+                break;
+        }
+
+        return '';
     }
 
     public function BackThumbImage() {

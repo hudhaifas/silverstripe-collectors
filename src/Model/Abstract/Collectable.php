@@ -479,21 +479,42 @@ class Collectable
 
         if ($this->OtherImages()->Count()) {
             $lists[] = [
+                'Key' => 'other-images',
                 'Title' => _t('Collectors.OTHER_IMAGES', 'Other Images'),
-                'Content' => $this->renderWith('Includes/Tab_OtherImages')
             ];
         }
 
         if ($this->Explanations) {
             $lists[] = [
+                'Key' => 'explanations',
                 'Title' => _t('Collectors.EXPLANATIONS', 'Explanations'),
-                'Content' => $this->Explanations
             ];
         }
 
         $this->extend('extraTabs', $lists);
 
         return new ArrayList($lists);
+    }
+
+    public function getObjectTabContent($tabKey, $page = 1) {
+        switch ($tabKey) {
+            case 'other-images':
+                if ($this->OtherImages()->Count()) {
+                    return $this->renderWith('Includes/Tab_OtherImages');
+                }
+                break;
+
+            case 'explanations':
+                return $this->Explanations;
+
+            default:
+                $results = $this->extend('extraTabContent', $tabKey);
+                if (!empty($results)) {
+                    return $results[0];
+                }
+        }
+
+        return '';
     }
 
     public function isObjectDisabled() {
